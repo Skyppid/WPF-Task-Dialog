@@ -1,5 +1,7 @@
 # WPF Task Dialog Wrapper #
 
+**Ported from the original .Net 4 version to .Net Core. No functional changes.**
+
 It is a drop-in assembly that lets you call up Task Dialogs in your WPF app.
 Uses the native [TaskDialogIndirect][1] API calls when available (Vista/7) and
 falls back to an emulated WPF dialog when not (XP and earlier).
@@ -71,8 +73,8 @@ You can read more as well as see screenshots [here][4].
 
 ## Details ##
 
-- Project created in Visual Studio 2010
-- .NET 4.0 Client Profile
+- Project ported to Visual Studio 2019 (created in Visual Studio 2010 originally)
+- .Net Core 3.1
 - Uses the native TaskDialogIndirect API when available (Vista/7)
 - Licensed under [The Code Project Open License (CPOL) 1.02][5]
     - Can be freely redistributed
