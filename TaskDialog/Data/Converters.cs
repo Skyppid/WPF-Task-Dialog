@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Data;
 
-namespace TaskDialogInterop
+namespace TaskDialogInterop.Data
 {
 	/// <summary>
 	/// Converts a null check into a negated visibility value.
@@ -47,6 +48,25 @@ namespace TaskDialogInterop
 				throw new InvalidOperationException();
 
 			return (((Visibility)value) != Visibility.Visible);
+		}
+	}
+	/// <summary>
+	/// Converts a collection's count, specifically whether it is empty or not, into a visibility value.
+	/// </summary>
+	internal class CollectionNotEmptyToVisibilityConverter : IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+		{
+			if (value == null)
+				return DependencyProperty.UnsetValue;
+			if (!typeof(ICollection).IsAssignableFrom(value.GetType()))
+				throw new InvalidOperationException();
+
+			return (((ICollection)value).Count != 0 ? Visibility.Visible : Visibility.Collapsed);
+		}
+		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+		{
+			throw new NotSupportedException();
 		}
 	}
 	/// <summary>

@@ -19,38 +19,8 @@ namespace TaskDialogInterop
 	/// <para>For Timer: <c>true</c> will reset the timer tick count; otherwise, <c>false</c> will do nothing.</para>
 	/// <para>For all other notifications, the return value is ignored.</para>
 	/// </returns>
-	public delegate bool TaskDialogCallback(IActiveTaskDialog dialog, VistaTaskDialogNotificationArgs args, object callbackData);
+	public delegate bool TaskDialogCallback(IActiveTaskDialog dialog, TaskDialogNotificationArgs args, object callbackData);
 
-	/// <summary>
-	/// Specifies the standard buttons that are displayed on a task dialog.
-	/// </summary>
-	public enum TaskDialogCommonButtons
-	{
-		/// <summary>
-		/// The message box displays no buttons.
-		/// </summary>
-		None = 0,
-		/// <summary>
-		/// The message box displays a Close button.
-		/// </summary>
-		Close = 1,
-		/// <summary>
-		/// The message box displays Yes and No buttons.
-		/// </summary>
-		YesNo = 2,
-		/// <summary>
-		/// The message box displays Yes, No, and Cancel buttons.
-		/// </summary>
-		YesNoCancel = 3,
-		/// <summary>
-		/// The message box displays OK and Cancel buttons.
-		/// </summary>
-		OKCancel = 4,
-		/// <summary>
-		/// The message box displays Retry and Cancel buttons.
-		/// </summary>
-		RetryCancel = 5
-	}
 	/// <summary>
 	/// Defines configuration options for showing a task dialog.
 	/// </summary>
@@ -65,6 +35,22 @@ namespace TaskDialogInterop
 		/// the caption.
 		/// </remarks>
 		public static TaskDialogOptions Default;
+		/// <summary>
+		/// Contains localized strings for the emulated dialog.
+		/// </summary>
+		/// <remarks>
+		/// Note that these are only used by the emulated dialog.
+		/// The native dialog is controlled by Windows language settings.
+		/// </remarks>
+		public static TaskDialogStrings LocalizedStrings;
+
+		/// <summary>
+		/// Initializes the <see cref="T:TaskDialogOptions"/> type.
+		/// </summary>
+		static TaskDialogOptions()
+		{
+			LocalizedStrings = new EnglishTaskDialogStrings();
+		}
 
 		/// <summary>
 		/// The owner window of the task dialog box.
@@ -78,7 +64,7 @@ namespace TaskDialogInterop
 		/// A large 32x32 icon that signifies the purpose of the dialog, using
 		/// one of the built-in system icons.
 		/// </summary>
-		public VistaTaskDialogIcon MainIcon;
+		public TaskDialogIcon MainIcon;
 		/// <summary>
 		/// A large 32x32 icon that signifies the purpose of the dialog, using
 		/// a custom Icon resource. If defined <see cref="MainIcon"/> will be
@@ -109,7 +95,7 @@ namespace TaskDialogInterop
 		/// </summary>
 		public bool ExpandToFooter;
 		/// <summary>
-		/// Standard buttons.
+		/// Standard push buttons.
 		/// </summary>
 		public TaskDialogCommonButtons CommonButtons;
 		/// <summary>
@@ -118,13 +104,15 @@ namespace TaskDialogInterop
 		public string[] RadioButtons;
 		/// <summary>
 		/// Buttons that are not from the set of standard buttons. Use an
-		/// ampersand to denote an access key.
+		/// ampersand to denote an access key. These are ignored if CommandLinks
+		/// are also defined. These will be appended after any defined common buttons.
 		/// </summary>
 		public string[] CustomButtons;
 		/// <summary>
-		/// Command link buttons.
+		/// Command links. These override any custom buttons, but can be used with
+		/// radio and common buttons.
 		/// </summary>
-		public string[] CommandButtons;
+		public string[] CommandLinks;
 		/// <summary>
 		/// Zero-based index of the button to have focus by default.
 		/// </summary>
@@ -143,7 +131,7 @@ namespace TaskDialogInterop
 		/// A small 16x16 icon that signifies the purpose of the footer text,
 		/// using one of the built-in system icons.
 		/// </summary>
-		public VistaTaskDialogIcon FooterIcon;
+		public TaskDialogIcon FooterIcon;
 		/// <summary>
 		/// A small 16x16 icon that signifies the purpose of the footer text,
 		/// using a custom Icon resource. If defined <see cref="FooterIcon"/>
@@ -202,7 +190,7 @@ namespace TaskDialogInterop
 		public bool EnableCallbackTimer;
 	}
 	/// <summary>
-	/// Provides data for all task dialog buttons.
+	/// Provides view data for all task dialog buttons.
 	/// </summary>
 	public class TaskDialogButtonData : INotifyPropertyChanged
 	{
@@ -432,7 +420,7 @@ namespace TaskDialogInterop
 		/// </summary>
 		/// <param name="newState">The state to set the progress bar.</param>
 		/// <returns>If the function succeeds the return value is true.</returns>
-		bool SetProgressBarState(VistaProgressBarState newState);
+		bool SetProgressBarState(TaskDialogProgressBarState newState);
 		/// <summary>
 		/// Set the minimum and maximum values for the hosted progress bar.
 		/// </summary>
@@ -487,7 +475,7 @@ namespace TaskDialogInterop
 		/// custom via Icon type) must be used when upating the icon.
 		/// </summary>
 		/// <param name="icon">Task Dialog standard icon.</param>
-		void UpdateMainIcon(VistaTaskDialogIcon icon);
+		void UpdateMainIcon(TaskDialogIcon icon);
 		/// <summary>
 		/// Updates the main instruction icon. Note the type (standard via enum or
 		/// custom via Icon type) must be used when upating the icon.
@@ -499,7 +487,7 @@ namespace TaskDialogInterop
 		/// custom via Icon type) must be used when upating the icon.
 		/// </summary>
 		/// <param name="icon">Task Dialog standard icon.</param>
-		void UpdateFooterIcon(VistaTaskDialogIcon icon);
+		void UpdateFooterIcon(TaskDialogIcon icon);
 		/// <summary>
 		/// Updates the footer icon. Note the type (standard via enum or
 		/// custom via Icon type) must be used when upating the icon.
