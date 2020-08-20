@@ -1,5 +1,4 @@
 using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Diagnostics.CodeAnalysis;
 
@@ -8,7 +7,7 @@ namespace TaskDialogInterop
 	/// <summary>
 	/// Class to hold native code interop declarations.
 	/// </summary>
-	internal static partial class UnsafeNativeMethods
+	internal static class UnsafeNativeMethods
 	{
 		/// <summary>
 		/// An application-defined function used with the TaskDialogIndirect function. It receives messages from the task dialog when various events occur.
@@ -48,7 +47,7 @@ namespace TaskDialogInterop
 		/// <param name="pnButton">The push button pressed.</param>
 		/// <param name="pnRadioButton">The radio button that was selected.</param>
 		/// <param name="pfVerificationFlagChecked">The state of the verification checkbox on dismiss of the Task Dialog.</param>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1400:PInvokeEntryPointsShouldExist", Justification = "Declaration is valid and works fine.")]
+		[SuppressMessage("Microsoft.Interoperability", "CA1400:PInvokeEntryPointsShouldExist", Justification = "Declaration is valid and works fine.")]
 		[DllImport("ComCtl32", CharSet = CharSet.Unicode, EntryPoint = "TaskDialogIndirect", ExactSpelling = true, PreserveSig = false)]
 		internal static extern void TaskDialogIndirect(
 			[In] ref TASKDIALOGCONFIG pTaskConfig,
@@ -60,23 +59,23 @@ namespace TaskDialogInterop
 		/// Win32 SendMessage.
 		/// </summary>
 		/// <param name="hWnd">Window handle to send to.</param>
-		/// <param name="Msg">The windows message to send.</param>
+		/// <param name="msg">The windows message to send.</param>
 		/// <param name="wParam">Specifies additional message-specific information.</param>
 		/// <param name="lParam">Specifies additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
 		[DllImport("user32.dll")]
-		internal static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+		internal static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 
 		/// <summary>
 		/// Win32 SendMessage.
 		/// </summary>
 		/// <param name="hWnd">Window handle to send to.</param>
-		/// <param name="Msg">The windows message to send.</param>
+		/// <param name="msg">The windows message to send.</param>
 		/// <param name="wParam">Specifies additional message-specific information.</param>
 		/// <param name="lParam">Specifies additional message-specific information as a string.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
 		[DllImport("user32.dll", EntryPoint="SendMessage")]
-		internal static extern IntPtr SendMessageWithString(IntPtr hWnd, uint Msg, IntPtr wParam, [MarshalAs(UnmanagedType.LPWStr)] string lParam);
+		internal static extern IntPtr SendMessageWithString(IntPtr hWnd, uint msg, IntPtr wParam, [MarshalAs(UnmanagedType.LPWStr)] string lParam);
 
 		/// <summary>
 		/// Changes the text of the specified window's title bar (if it has one).

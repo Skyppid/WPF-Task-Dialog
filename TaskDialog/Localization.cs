@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace TaskDialogInterop
+﻿namespace TaskDialogInterop
 {
 	/// <summary>
 	/// Defines localized strings for the emulated dialog.
@@ -62,65 +57,48 @@ namespace TaskDialogInterop
 		/// <summary>
 		/// Gets the text to show on the OK common button.
 		/// </summary>
-		public override string CommonButton_OK
-		{
-			// Here I am hard-coding some English strings
-			// But you could retrieve values from a ResourceDictionary or Resx
-			// Don't forget to add an underscore to denote the accelerator key!
-			get { return "_OK"; }
-		}
-		/// <summary>
+		public override string CommonButton_OK =>
+            // Here I am hard-coding some English strings
+            // But you could retrieve values from a ResourceDictionary or Resx
+            // Don't forget to add an underscore to denote the accelerator key!
+            "_OK";
+
+        /// <summary>
 		/// Gets the text to show on the Yes common button.
 		/// </summary>
-		public override string CommonButton_Yes
-		{
-			get { return "_Yes"; }
-		}
-		/// <summary>
+		public override string CommonButton_Yes => "_Yes";
+
+        /// <summary>
 		/// Gets the text to show on the No common button.
 		/// </summary>
-		public override string CommonButton_No
-		{
-			get { return "_No"; }
-		}
-		/// <summary>
+		public override string CommonButton_No => "_No";
+
+        /// <summary>
 		/// Gets the text to show on the Cancel common button.
 		/// </summary>
-		public override string CommonButton_Cancel
-		{
-			get { return "_Cancel"; }
-		}
-		/// <summary>
+		public override string CommonButton_Cancel => "_Cancel";
+
+        /// <summary>
 		/// Gets the text to show on the Retry common button.
 		/// </summary>
-		public override string CommonButton_Retry
-		{
-			get { return "_Retry"; }
-		}
-		/// <summary>
+		public override string CommonButton_Retry => "_Retry";
+
+        /// <summary>
 		/// Gets the text to show on the Close common button.
 		/// </summary>
-		public override string CommonButton_Close
-		{
-			get { return "_Close"; }
-		}
+		public override string CommonButton_Close => "_Close";
 
-		/// <summary>
+        /// <summary>
 		/// Gets the text to show on the expander toggle button to show details.
 		/// </summary>
-		public override string ExpandedInfo_Show
-		{
-			get { return "Show details"; }
-		}
-		/// <summary>
+		public override string ExpandedInfo_Show => "Show details";
+
+        /// <summary>
 		/// Gets the text to show on the expander toggle button to hide details.
 		/// </summary>
-		public override string ExpandedInfo_Hide
-		{
-			get { return "Hide details"; }
-		}
+		public override string ExpandedInfo_Hide => "Hide details";
 
-		/// <summary>
+        /// <summary>
 		/// Initializes a new instance of the <see cref="T:EnglishTaskDialogStrings"/> class.
 		/// </summary>
 		internal EnglishTaskDialogStrings()

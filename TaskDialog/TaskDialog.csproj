@@ -1,136 +1,80 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{37FD53F7-8A8F-4427-8FF4-6299E2933A7E}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyVersion>1.0.14.22306</AssemblyVersion>
+    <FileVersion>1.0.14.22306</FileVersion>
     <RootNamespace>TaskDialogInterop</RootNamespace>
-    <AssemblyName>TaskDialog</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-    <Utf8Output>true</Utf8Output>
-    <ExpressionBlendVersion>4.0.20901.0</ExpressionBlendVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageId>TaskDialog.Core</PackageId>
+    <Company />
+    <Product>TaskDialog for WPF</Product>
+    <PackageLicenseFile>license.txt</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/Skyppid/WPF-Task-Dialog</PackageProjectUrl>
+    <Authors>Sean A. Hanley; Manuel Eisenschink</Authors>
+    <Description>.Net Core 3.1 port of Sean A. Hanley's TaskDialog.WPF library.</Description>
+    <PackageReleaseNotes>1.0.0: Ported original version to .Net Core 3.1 (refactored code, no public renaming or any breaking changes)</PackageReleaseNotes>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\Debug\TaskDialog.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\Release\TaskDialog.xml</DocumentationFile>
   </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Runtime.Remoting" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
+    <None Remove="Resources\cmdarr1.png" />
+    <None Remove="Resources\cmdarr2.png" />
+    <None Remove="Resources\cmdarr3.png" />
+    <None Remove="Resources\exparr-down1.bmp" />
+    <None Remove="Resources\exparr-down2.bmp" />
+    <None Remove="Resources\exparr-down3.bmp" />
+    <None Remove="Resources\exparr-up1.bmp" />
+    <None Remove="Resources\exparr-up2.bmp" />
+    <None Remove="Resources\exparr-up3.bmp" />
+    <None Remove="Resources\shield-16.png" />
+    <None Remove="Resources\shield-32.png" />
+    <None Include="..\license.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="EmulatedTaskDialog.cs" />
-    <Compile Include="Localization.cs" />
-    <Page Include="Themes\Generic.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Compile Include="Win32Types.cs" />
-    <Compile Include="Data\Converters.cs" />
-    <Compile Include="NativeMethods.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Input\RelayCommand.cs" />
-    <Compile Include="SafeNativeMethods.cs" />
-    <Compile Include="TaskDialog.cs" />
-    <Compile Include="TaskDialogEvents.cs" />
-    <Compile Include="TaskDialogInterop.cs" />
-    <Compile Include="TaskDialogResult.cs" />
-    <Compile Include="TaskDialogTypes.cs" />
-    <Compile Include="EmulatedTaskDialogViewModel.cs" />
-    <Compile Include="UnsafeNativeMethods.cs" />
-    <Compile Include="ActiveTaskDialog.cs" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\shield-16.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\shield-32.png" />
-  </ItemGroup>
+
   <ItemGroup>
     <Resource Include="Resources\cmdarr1.png" />
     <Resource Include="Resources\cmdarr2.png" />
+    <Resource Include="Resources\cmdarr3.png" />
     <Resource Include="Resources\exparr-down1.bmp" />
     <Resource Include="Resources\exparr-down2.bmp" />
     <Resource Include="Resources\exparr-down3.bmp" />
     <Resource Include="Resources\exparr-up1.bmp" />
     <Resource Include="Resources\exparr-up2.bmp" />
     <Resource Include="Resources\exparr-up3.bmp" />
+    <EmbeddedResource Include="Resources\shield-16.png" />
+    <EmbeddedResource Include="Resources\shield-32.png" />
   </ItemGroup>
+
   <ItemGroup>
-    <Resource Include="Resources\cmdarr3.png" />
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
+
   <ItemGroup>
-    <DesignData Include="DesignData\DesignerCommandLink.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </DesignData>
-    <DesignData Include="DesignData\DesignerTaskDialogViewModel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </DesignData>
-    <Page Include="ResourceDictionaries\Common.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ResourceDictionaries\DefaultCommandLinkStyle.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ResourceDictionaries\DefaultEmulatedTaskDialogStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

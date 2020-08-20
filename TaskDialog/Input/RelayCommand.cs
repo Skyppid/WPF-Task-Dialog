@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
 
 namespace TaskDialogInterop.Input
@@ -29,10 +26,7 @@ namespace TaskDialogInterop.Input
 		/// <param name="canExecute">A method to execute to determine whether the command can execure.</param>
 		public RelayCommand(Action execute, Func<bool> canExecute)
 		{
-			if (execute == null)
-				throw new ArgumentNullException("execute");
-
-			_execute = execute;
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
 			_canExecute = canExecute;
 		}
 
@@ -46,7 +40,7 @@ namespace TaskDialogInterop.Input
 		[System.Diagnostics.DebuggerStepThrough]
 		public bool CanExecute(object parameter)
 		{
-			return _canExecute == null ? true : _canExecute();
+			return _canExecute?.Invoke() ?? true;
 		}
 
 		/// <summary>
@@ -54,9 +48,9 @@ namespace TaskDialogInterop.Input
 		/// </summary>
 		public event EventHandler CanExecuteChanged
 		{
-			add { CommandManager.RequerySuggested += value; }
-			remove { CommandManager.RequerySuggested -= value; }
-		}
+			add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
+        }
 
 		/// <summary>
 		/// Defines the method to be called when the command is invoked.
@@ -90,10 +84,7 @@ namespace TaskDialogInterop.Input
 		/// <param name="canExecute">A method to execute to determine whether the command can execure.</param>
 		public RelayCommand(Action<T> execute, Predicate<T> canExecute)
 		{
-			if (execute == null)
-				throw new ArgumentNullException("execute");
-
-			_execute = execute;
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
 			_canExecute = canExecute;
 		}
 
@@ -116,7 +107,7 @@ namespace TaskDialogInterop.Input
 			}
 			else
 			{
-				return _canExecute(default(T));
+				return _canExecute(default);
 			}
 		}
 
@@ -125,9 +116,9 @@ namespace TaskDialogInterop.Input
 		/// </summary>
 		public event EventHandler CanExecuteChanged
 		{
-			add { CommandManager.RequerySuggested += value; }
-			remove { CommandManager.RequerySuggested -= value; }
-		}
+			add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
+        }
 
 		/// <summary>
 		/// Defines the method to be called when the command is invoked.
@@ -141,7 +132,7 @@ namespace TaskDialogInterop.Input
 			}
 			else
 			{
-				_execute(default(T));
+				_execute(default);
 			}
 		}
 		/// <summary>

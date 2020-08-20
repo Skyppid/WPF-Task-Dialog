@@ -218,8 +218,8 @@ namespace TaskDialogInterop
 		/// </summary>
 		public bool IsEnabled
 		{
-			get { return _isEnabled; }
-			set
+			get => _isEnabled;
+            set
 			{
 				_isEnabled = value;
 
@@ -231,8 +231,8 @@ namespace TaskDialogInterop
 		/// </summary>
 		public bool IsElevationRequired
 		{
-			get { return _isElevationRequired; }
-			set
+			get => _isElevationRequired;
+            set
 			{
 				_isElevationRequired = value;
 
@@ -289,10 +289,9 @@ namespace TaskDialogInterop
 		/// </summary>
 		/// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
 		protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
-		{
-			if (PropertyChanged != null)
-				PropertyChanged(this, e);
-		}
+        {
+            PropertyChanged?.Invoke(this, e);
+        }
 	}
 	/// <summary>
 	/// Defines methods for manipulating an active dialog during a callback.

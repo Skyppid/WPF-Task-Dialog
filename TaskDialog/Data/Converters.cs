@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Data;
 
@@ -59,10 +56,10 @@ namespace TaskDialogInterop.Data
 		{
 			if (value == null)
 				return DependencyProperty.UnsetValue;
-			if (!typeof(ICollection).IsAssignableFrom(value.GetType()))
+			if (!(value is ICollection))
 				throw new InvalidOperationException();
 
-			return (((ICollection)value).Count != 0 ? Visibility.Visible : Visibility.Collapsed);
+			return ((ICollection)value).Count != 0 ? Visibility.Visible : Visibility.Collapsed;
 		}
 		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
 		{
@@ -79,42 +76,37 @@ namespace TaskDialogInterop.Data
 			if (value == null)
 				return null;
 
-			if (value.GetType() != typeof(String))
+			if (value.GetType() != typeof(string))
 			{
 				throw new InvalidOperationException();
 			}
-			if (targetType != typeof(String))
+			if (targetType != typeof(string))
 			{
 				throw new InvalidOperationException();
 			}
 
 			if (parameter == null || parameter.ToString() == "1")
-			{
-				if (value.ToString().Contains("\n"))
+            {
+                if (value.ToString().Contains("\n"))
 				{
 					return value.ToString().Substring(0, value.ToString().IndexOf("\n"));
 				}
-				else
-				{
-					return value;
-				}
-			}
-			else if (parameter.ToString() == "2")
-			{
-				if (value.ToString().Contains("\n"))
-				{
-					return value.ToString().Substring(value.ToString().IndexOf("\n") + 1);
-				}
-				else
-				{
-					return null;
-				}
-			}
-			else
-			{
-				return value;
-			}
-		}
+
+                return value;
+            }
+
+            if (parameter.ToString() == "2")
+            {
+                if (value.ToString().Contains("\n"))
+                {
+                    return value.ToString().Substring(value.ToString().IndexOf("\n") + 1);
+                }
+
+                return null;
+            }
+
+            return value;
+        }
 		public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
 		{
 			throw new NotSupportedException();

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Runtime.InteropServices;
 
 namespace TaskDialogInterop
@@ -9,9 +6,9 @@ namespace TaskDialogInterop
 	internal class NativeMethods
 	{
 		[DllImport("user32.dll")]
-		internal extern static int SetWindowLong(IntPtr hwnd, int index, int value);
+		internal static extern int SetWindowLong(IntPtr hwnd, int index, int value);
 		[DllImport("user32.dll")]
-		internal extern static int GetWindowLong(IntPtr hwnd, int index);
+		internal static extern int GetWindowLong(IntPtr hwnd, int index);
 		[DllImport("user32.dll")]
 		internal static extern bool SetWindowPos(IntPtr hwnd, IntPtr hwndInsertAfter, int x, int y, int width, int height, uint flags);
 		[DllImport("user32.dll")]

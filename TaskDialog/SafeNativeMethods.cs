@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 
 namespace TaskDialogInterop
@@ -59,16 +56,15 @@ namespace TaskDialogInterop
 			// For XP and older
 			// TODO Setting Window Icon visibility doesn't work in XP
 			else
-			{
-				// 0 - ICON_SMALL (caption bar)
+            {
+                // 0 - ICON_SMALL (caption bar)
 				// 1 - ICON_BIG   (alt-tab)
 
-				if (showIcon)
-					NativeMethods.SendMessage(wih.Handle, Win32Constants.WM_SETICON, new IntPtr(0),
-						NativeMethods.DefWindowProc(wih.Handle, Win32Constants.WM_SETICON, new IntPtr(0), IntPtr.Zero));
-				else
-					NativeMethods.SendMessage(wih.Handle, Win32Constants.WM_SETICON, new IntPtr(0), IntPtr.Zero);
-			}
+                NativeMethods.SendMessage(wih.Handle, Win32Constants.WM_SETICON, new IntPtr(0),
+                    showIcon
+                        ? NativeMethods.DefWindowProc(wih.Handle, Win32Constants.WM_SETICON, new IntPtr(0), IntPtr.Zero)
+                        : IntPtr.Zero);
+            }
 		}
 	}
 }

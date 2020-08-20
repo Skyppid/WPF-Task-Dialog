@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Media;
 
 namespace TaskDialogInterop
 {
@@ -22,9 +20,9 @@ namespace TaskDialogInterop
 		internal static readonly Regex HyperlinkRegex = new Regex(HtmlHyperlinkPattern, RegexOptions.IgnoreCase);
 		internal static readonly Regex HyperlinkCaptureRegex = new Regex(HtmlHyperlinkCapturePattern, RegexOptions.IgnoreCase);
 
-		internal const int CommandButtonIDOffset = 2000;
-		internal const int RadioButtonIDOffset = 1000;
-		internal const int CustomButtonIDOffset = 500;
+		internal const int COMMAND_BUTTON_ID_OFFSET = 2000;
+		internal const int RADIO_BUTTON_ID_OFFSET = 1000;
+		internal const int CUSTOM_BUTTON_ID_OFFSET = 500;
 
 		/// <summary>
 		/// Forces the WPF-based TaskDialog window instead of using native calls.
@@ -154,7 +152,7 @@ namespace TaskDialogInterop
 				VerificationText = verificationText
 			};
 
-			return TaskDialog.Show(options);
+			return Show(options);
 		}
 		/// <summary>
 		/// Displays a task dialog with the given configuration options.
@@ -388,8 +386,7 @@ namespace TaskDialogInterop
 			switch (commonButtons)
 			{
 				default:
-				case TaskDialogCommonButtons.None:
-					index = -1;
+                    index = -1;
 					break;
 				case TaskDialogCommonButtons.Close:
 					index = 0;
@@ -504,7 +501,7 @@ namespace TaskDialogInterop
 		/// </remarks>
 		public static int GetButtonIdForCommandButton(int index)
 		{
-			return CommandButtonIDOffset + index;
+			return COMMAND_BUTTON_ID_OFFSET + index;
 		}
 		/// <summary>
 		/// Gets the buttonId for a radio button.
@@ -519,7 +516,7 @@ namespace TaskDialogInterop
 		/// </remarks>
 		public static int GetButtonIdForRadioButton(int index)
 		{
-			return RadioButtonIDOffset + index;
+			return RADIO_BUTTON_ID_OFFSET + index;
 		}
 		/// <summary>
 		/// Gets the buttonId for a custom button.
@@ -534,7 +531,7 @@ namespace TaskDialogInterop
 		/// </remarks>
 		public static int GetButtonIdForCustomButton(int index)
 		{
-			return CustomButtonIDOffset + index;
+			return CUSTOM_BUTTON_ID_OFFSET + index;
 		}
 
 		/// <summary>
@@ -542,23 +539,17 @@ namespace TaskDialogInterop
 		/// </summary>
 		/// <param name="e">The <see cref="TaskDialogInterop.TaskDialogShowingEventArgs"/> instance containing the event data.</param>
 		private static void OnShowing(TaskDialogShowingEventArgs e)
-		{
-			if (Showing != null)
-			{
-				Showing(null, e);
-			}
-		}
+        {
+            Showing?.Invoke(null, e);
+        }
 		/// <summary>
 		/// Raises the <see cref="E:Closed"/> event.
 		/// </summary>
 		/// <param name="e">The <see cref="TaskDialogInterop.TaskDialogClosedEventArgs"/> instance containing the event data.</param>
 		private static void OnClosed(TaskDialogClosedEventArgs e)
-		{
-			if (Closed != null)
-			{
-				Closed(null, e);
-			}
-		}
+        {
+            Closed?.Invoke(null, e);
+        }
 		private static TaskDialogResult ShowTaskDialog(TaskDialogOptions options)
 		{
 			var td = new NativeTaskDialog();
@@ -689,43 +680,39 @@ namespace TaskDialogInterop
 			td.CallbackData = options.CallbackData;
 			td.Config = options;
 
-			TaskDialogResult result;
-			int diagResult = 0;
-			TaskDialogSimpleResult simpResult = TaskDialogSimpleResult.None;
-			bool verificationChecked = false;
-			int radioButtonResult = -1;
-			int? commandButtonResult = null;
+            TaskDialogSimpleResult simpResult;
+            int? commandButtonResult = null;
 			int? customButtonResult = null;
 
-			diagResult = td.Show((td.CanBeMinimized ? null : options.Owner), out verificationChecked, out radioButtonResult);
+			int diagResult = td.Show((td.CanBeMinimized ? null : options.Owner), out bool verificationChecked, out int radioButtonResult);
 
-			if (radioButtonResult >= RadioButtonIDOffset)
+			if (radioButtonResult >= RADIO_BUTTON_ID_OFFSET)
 			{
 				simpResult = (TaskDialogSimpleResult)diagResult;
-				radioButtonResult -= RadioButtonIDOffset;
+				radioButtonResult -= RADIO_BUTTON_ID_OFFSET;
 			}
 
-			if (diagResult >= CommandButtonIDOffset)
+			if (diagResult >= COMMAND_BUTTON_ID_OFFSET)
 			{
 				simpResult = TaskDialogSimpleResult.Command;
-				commandButtonResult = diagResult - CommandButtonIDOffset;
+				commandButtonResult = diagResult - COMMAND_BUTTON_ID_OFFSET;
 			}
-			else if (diagResult >= CustomButtonIDOffset)
+			else if (diagResult >= CUSTOM_BUTTON_ID_OFFSET)
 			{
 				simpResult = TaskDialogSimpleResult.Custom;
-				customButtonResult = diagResult - CustomButtonIDOffset;
+				customButtonResult = diagResult - CUSTOM_BUTTON_ID_OFFSET;
 			}
 			else
 			{
 				simpResult = (TaskDialogSimpleResult)diagResult;
 			}
 
-			result = new TaskDialogResult(
-				simpResult,
-				(String.IsNullOrEmpty(options.VerificationText) ? null : (bool?)verificationChecked),
-				((options.RadioButtons == null || options.RadioButtons.Length == 0) ? null : (int?)radioButtonResult),
-				((options.CommandLinks == null || options.CommandLinks.Length == 0) ? null : commandButtonResult),
-				((options.CustomButtons == null || options.CustomButtons.Length == 0) ? null : customButtonResult));
+			var result = new TaskDialogResult(
+                simpResult,
+                (string.IsNullOrEmpty(options.VerificationText) ? null : (bool?)verificationChecked),
+                ((options.RadioButtons == null || options.RadioButtons.Length == 0) ? null : (int?)radioButtonResult),
+                ((options.CommandLinks == null || options.CommandLinks.Length == 0) ? null : commandButtonResult),
+                ((options.CustomButtons == null || options.CustomButtons.Length == 0) ? null : customButtonResult));
 
 			return result;
 		}
@@ -743,32 +730,28 @@ namespace TaskDialogInterop
 
 			td.ShowDialog();
 
-			TaskDialogResult result;
-			int diagResult = -1;
-			TaskDialogSimpleResult simpResult = TaskDialogSimpleResult.None;
-			bool verificationChecked = false;
-			int radioButtonResult = -1;
-			int? commandButtonResult = null;
+            TaskDialogSimpleResult simpResult = TaskDialogSimpleResult.None;
+            int? commandButtonResult = null;
 			int? customButtonResult = null;
 
-			diagResult = tdvm.DialogResult;
-			radioButtonResult = tdvm.RadioResult - RadioButtonIDOffset;
-			verificationChecked = tdvm.VerificationChecked;
+			int diagResult = tdvm.DialogResult;
+			int radioButtonResult = tdvm.RadioResult - RADIO_BUTTON_ID_OFFSET;
+			bool verificationChecked = tdvm.VerificationChecked;
 
-			if (diagResult >= CommandButtonIDOffset)
+			if (diagResult >= COMMAND_BUTTON_ID_OFFSET)
 			{
 				simpResult = TaskDialogSimpleResult.Command;
-				commandButtonResult = diagResult - CommandButtonIDOffset;
+				commandButtonResult = diagResult - COMMAND_BUTTON_ID_OFFSET;
 			}
 			//else if (diagResult >= RadioButtonIDOffset)
 			//{
 			//    simpResult = (TaskDialogSimpleResult)diagResult;
 			//    radioButtonResult = diagResult - RadioButtonIDOffset;
 			//}
-			else if (diagResult >= CustomButtonIDOffset)
+			else if (diagResult >= CUSTOM_BUTTON_ID_OFFSET)
 			{
 				simpResult = TaskDialogSimpleResult.Custom;
-				customButtonResult = diagResult - CustomButtonIDOffset;
+				customButtonResult = diagResult - CUSTOM_BUTTON_ID_OFFSET;
 			}
 			// This occurs usually when the red X button is clicked
 			else if (diagResult == -1)
@@ -780,12 +763,12 @@ namespace TaskDialogInterop
 				simpResult = (TaskDialogSimpleResult)diagResult;
 			}
 
-			result = new TaskDialogResult(
-				simpResult,
-				(String.IsNullOrEmpty(options.VerificationText) ? null : (bool?)verificationChecked),
-				((options.RadioButtons == null || options.RadioButtons.Length == 0) ? null : (int?)radioButtonResult),
-				((options.CommandLinks == null || options.CommandLinks.Length == 0) ? null : commandButtonResult),
-				((options.CustomButtons == null || options.CustomButtons.Length == 0) ? null : customButtonResult));
+			var result = new TaskDialogResult(
+                simpResult,
+                (string.IsNullOrEmpty(options.VerificationText) ? null : (bool?)verificationChecked),
+                ((options.RadioButtons == null || options.RadioButtons.Length == 0) ? null : (int?)radioButtonResult),
+                ((options.CommandLinks == null || options.CommandLinks.Length == 0) ? null : commandButtonResult),
+                ((options.CustomButtons == null || options.CustomButtons.Length == 0) ? null : customButtonResult));
 
 			return result;
 		}

@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
-
 using TaskDialogInterop.Input;
+using TaskDialogInterop.Properties;
 
 namespace TaskDialogInterop
 {
-	/// <summary>
-	/// Provides commands and data to the emulated TaskDialog view.
-	/// </summary>
-	public class EmulatedTaskDialogViewModel : IActiveTaskDialog, INotifyPropertyChanged
+    /// <summary>
+    /// Provides commands and data to the emulated TaskDialog view.
+    /// </summary>
+    public class EmulatedTaskDialogViewModel : IActiveTaskDialog, INotifyPropertyChanged
 	{
 		private static readonly TimeSpan CallbackTimerInterval = new TimeSpan(0, 0, 0, 0, 200);
 
@@ -61,7 +60,7 @@ namespace TaskDialogInterop
 		private double _progressBarMin;
 		private double _progressBarMax;
 		private double _progressBarValue;
-		private System.Windows.Threading.DispatcherTimer _callbackTimer;
+		private readonly System.Windows.Threading.DispatcherTimer _callbackTimer;
 		private DateTime _callbackTimerStart;
 
 		private ICommand _commandNormalButton;
@@ -92,10 +91,9 @@ namespace TaskDialogInterop
 			if (options.EnableCallbackTimer)
 			{
 				// By default it will run on the default dispatcher and with Background priority
-				_callbackTimer = new System.Windows.Threading.DispatcherTimer();
+                _callbackTimer = new System.Windows.Threading.DispatcherTimer {Interval = CallbackTimerInterval};
 
-				_callbackTimer.Interval = CallbackTimerInterval;
-				_callbackTimer.Tick += new EventHandler(CallbackTimer_Tick);
+                _callbackTimer.Tick += CallbackTimer_Tick;
 			}
 
 			FixAllButtonLabelAccessKeys();
@@ -110,23 +108,15 @@ namespace TaskDialogInterop
 		/// <summary>
 		/// Gets the window start position.
 		/// </summary>
-		public System.Windows.WindowStartupLocation StartPosition
-		{
-			get
-			{
-				return (options.Owner == null) ? System.Windows.WindowStartupLocation.CenterScreen : System.Windows.WindowStartupLocation.CenterOwner;
-			}
-		}
-		/// <summary>
+		public System.Windows.WindowStartupLocation StartPosition => (options.Owner == null) ? System.Windows.WindowStartupLocation.CenterScreen : System.Windows.WindowStartupLocation.CenterOwner;
+
+        /// <summary>
 		/// Gets the window caption.
 		/// </summary>
 		public string Title
 		{
-			get
-			{
-				return String.IsNullOrEmpty(options.Title) ? System.AppDomain.CurrentDomain.FriendlyName : options.Title;
-			}
-			private set
+			get => String.IsNullOrEmpty(options.Title) ? AppDomain.CurrentDomain.FriendlyName : options.Title;
+            private set
 			{
 				options.Title = value;
 
@@ -138,8 +128,8 @@ namespace TaskDialogInterop
 		/// </summary>
 		public string MainInstruction
 		{
-			get { return options.MainInstruction; }
-			private set
+			get => options.MainInstruction;
+            private set
 			{
 				options.MainInstruction = value;
 
@@ -151,8 +141,8 @@ namespace TaskDialogInterop
 		/// </summary>
 		public string Content
 		{
-			get { return options.Content; }
-			private set
+			get => options.Content;
+            private set
 			{
 				options.Content = value;
 
@@ -162,44 +152,26 @@ namespace TaskDialogInterop
 		/// <summary>
 		/// Gets the expanded info text for the dialog's content area.
 		/// </summary>
-		public string ContentExpandedInfo
-		{
-			get
-			{
-				return options.ExpandToFooter ? null : options.ExpandedInfo;
-			}
-		}
-		/// <summary>
+		public string ContentExpandedInfo => options.ExpandToFooter ? null : options.ExpandedInfo;
+
+        /// <summary>
 		/// Gets the expanded info text for the dialog's footer area.
 		/// </summary>
-		public string FooterExpandedInfo
-		{
-			get
-			{
-				return options.ExpandToFooter ? options.ExpandedInfo : null;
-			}
-		}
-		/// <summary>
+		public string FooterExpandedInfo => options.ExpandToFooter ? options.ExpandedInfo : null;
+
+        /// <summary>
 		/// Gets a value indicating whether or not any expanded info text has
 		/// been set.
 		/// </summary>
-		public bool HasExpandedInfo
-		{
-			get
-			{
-				return !String.IsNullOrEmpty(options.ExpandedInfo);
-			}
-		}
-		/// <summary>
+		public bool HasExpandedInfo => !string.IsNullOrEmpty(options.ExpandedInfo);
+
+        /// <summary>
 		/// Gets or sets a value indicating whether expanded info is visible.
 		/// </summary>
 		public bool ExpandedInfoVisible
 		{
-			get
-			{
-				return _expandedInfoVisible;
-			}
-			set
+			get => _expandedInfoVisible;
+            set
 			{
 				if (_expandedInfoVisible == value)
 					return;
@@ -210,50 +182,44 @@ namespace TaskDialogInterop
 				RaisePropertyChangedEvent("ContentExpandedInfoVisible");
 				RaisePropertyChangedEvent("FooterExpandedInfoVisible");
 
-				var args = new TaskDialogNotificationArgs();
+                var args = new TaskDialogNotificationArgs
+                {
+                    Config = options,
+                    Notification = TaskDialogNotification.ExpandoButtonClicked,
+                    Expanded = _expandedInfoVisible
+                };
 
-				args.Config = this.options;
-				args.Notification = TaskDialogNotification.ExpandoButtonClicked;
-				args.Expanded = _expandedInfoVisible;
 
-				OnCallback(args);
+                OnCallback(args);
 			}
 		}
 		/// <summary>
 		/// Gets a value indicating whether content area expanded info is visible.
 		/// </summary>
-		public bool ContentExpandedInfoVisible
-		{
-			get { return !options.ExpandToFooter && _expandedInfoVisible; }
-		}
-		/// <summary>
+		public bool ContentExpandedInfoVisible => !options.ExpandToFooter && _expandedInfoVisible;
+
+        /// <summary>
 		/// Gets a value indicating whether footer area expanded info is visible.
 		/// </summary>
-		public bool FooterExpandedInfoVisible
-		{
-			get { return options.ExpandToFooter && _expandedInfoVisible; }
-		}
-		/// <summary>
+		public bool FooterExpandedInfoVisible => options.ExpandToFooter && _expandedInfoVisible;
+
+        /// <summary>
 		/// Gets the text to show on the expanded info toggle button to open the expander.
 		/// </summary>
-		public string ExpandedInfoShowDetailsText
-		{
-			get { return TaskDialogOptions.LocalizedStrings.ExpandedInfo_Show; }
-		}
-		/// <summary>
+		public string ExpandedInfoShowDetailsText => TaskDialogOptions.LocalizedStrings.ExpandedInfo_Show;
+
+        /// <summary>
 		/// Gets the text to show on the expanded info toggle button to close the expander.
 		/// </summary>
-		public string ExpandedInfoHideDetailsText
-		{
-			get { return TaskDialogOptions.LocalizedStrings.ExpandedInfo_Hide; }
-		}
-		/// <summary>
+		public string ExpandedInfoHideDetailsText => TaskDialogOptions.LocalizedStrings.ExpandedInfo_Hide;
+
+        /// <summary>
 		/// Gets the verification text.
 		/// </summary>
 		public string VerificationText
 		{
-			get { return options.VerificationText; }
-			private set
+			get => options.VerificationText;
+            private set
 			{
 				options.VerificationText = value;
 
@@ -265,8 +231,8 @@ namespace TaskDialogInterop
 		/// </summary>
 		public bool VerificationChecked
 		{
-			get { return _verificationChecked; }
-			set
+			get => _verificationChecked;
+            set
 			{
 				if (_verificationChecked == value)
 					return;
@@ -275,13 +241,15 @@ namespace TaskDialogInterop
 
 				RaisePropertyChangedEvent("VerificationChecked");
 
-				var args = new TaskDialogNotificationArgs();
+                var args = new TaskDialogNotificationArgs
+                {
+                    Config = options,
+                    Notification = TaskDialogNotification.VerificationClicked,
+                    VerificationFlagChecked = _verificationChecked
+                };
 
-				args.Config = this.options;
-				args.Notification = TaskDialogNotification.VerificationClicked;
-				args.VerificationFlagChecked = _verificationChecked;
 
-				OnCallback(args);
+                OnCallback(args);
 			}
 		}
 		/// <summary>
@@ -289,8 +257,8 @@ namespace TaskDialogInterop
 		/// </summary>
 		public string FooterText
 		{
-			get { return options.FooterText; }
-			private set
+			get => options.FooterText;
+            private set
 			{
 				options.FooterText = value;
 
@@ -300,20 +268,15 @@ namespace TaskDialogInterop
 		/// <summary>
 		/// Gets a value indicating whether or not a main icon is defined, whether custom or built-in system.
 		/// </summary>
-		public bool HasMainIcon
-		{
-			get
-			{
-				return options.MainIcon != TaskDialogIcon.None || options.CustomMainIcon != null;
-			}
-		}
-		/// <summary>
+		public bool HasMainIcon => options.MainIcon != TaskDialogIcon.None || options.CustomMainIcon != null;
+
+        /// <summary>
 		/// Gets the type of the main icon.
 		/// </summary>
 		public TaskDialogIcon MainIconType
 		{
-			get { return options.MainIcon; }
-			private set
+			get => options.MainIcon;
+            private set
 			{
 				options.MainIcon = value;
 
@@ -323,31 +286,19 @@ namespace TaskDialogInterop
 		/// <summary>
 		/// Gets the main icon.
 		/// </summary>
-		public System.Windows.Media.ImageSource MainIcon
-		{
-			get
-			{
-				return ConvertIconToImageSource(options.MainIcon, options.CustomMainIcon, true);
-			}
-		}
-		/// <summary>
+		public System.Windows.Media.ImageSource MainIcon => ConvertIconToImageSource(options.MainIcon, options.CustomMainIcon, true);
+
+        /// <summary>
 		/// Gets the footer icon.
 		/// </summary>
-		public System.Windows.Media.ImageSource FooterIcon
-		{
-			get
-			{
-				return ConvertIconToImageSource(options.FooterIcon, options.CustomFooterIcon, false);
-			}
-		}
-		/// <summary>
+		public System.Windows.Media.ImageSource FooterIcon => ConvertIconToImageSource(options.FooterIcon, options.CustomFooterIcon, false);
+
+        /// <summary>
 		/// Gets the default button index.
 		/// </summary>
-		public int DefaultButtonIndex
-		{
-			get { return options.DefaultButtonIndex ?? 0; }
-		}
-		/// <summary>
+		public int DefaultButtonIndex => options.DefaultButtonIndex ?? 0;
+
+        /// <summary>
 		/// Gets a value indicating whether or not Alt-F4, Esc, and the red X
 		/// close button should work.
 		/// </summary>
@@ -367,23 +318,15 @@ namespace TaskDialogInterop
 		/// <summary>
 		/// Gets a value indicating whether to show a progress bar.
 		/// </summary>
-		public bool ShowProgressBar
-		{
-			get
-			{
-				return options.ShowProgressBar || options.ShowMarqueeProgressBar;
-			}
-		}
-		/// <summary>
+		public bool ShowProgressBar => options.ShowProgressBar || options.ShowMarqueeProgressBar;
+
+        /// <summary>
 		/// Gets a value indicating whether to show an indeterminate progress bar or a regular one.
 		/// </summary>
 		public bool ProgressBarIndeterminate
 		{
-			get
-			{
-				return options.ShowMarqueeProgressBar && _progressBarMarqueeEnabled;
-			}
-			private set
+			get => options.ShowMarqueeProgressBar && _progressBarMarqueeEnabled;
+            private set
 			{
 				options.ShowMarqueeProgressBar = value;
 
@@ -396,8 +339,8 @@ namespace TaskDialogInterop
 		/// </summary>
 		public double ProgressBarMinimum
 		{
-			get { return _progressBarMin; }
-			private set
+			get => _progressBarMin;
+            private set
 			{
 				_progressBarMin = value;
 
@@ -409,8 +352,8 @@ namespace TaskDialogInterop
 		/// </summary>
 		public double ProgressBarMaximum
 		{
-			get { return _progressBarMax; }
-			private set
+			get => _progressBarMax;
+            private set
 			{
 				_progressBarMax = value;
 
@@ -422,8 +365,8 @@ namespace TaskDialogInterop
 		/// </summary>
 		public double ProgressBarValue
 		{
-			get { return _progressBarValue; }
-			private set
+			get => _progressBarValue;
+            private set
 			{
 				_progressBarValue = value;
 
@@ -448,7 +391,7 @@ namespace TaskDialogInterop
 						_normalButtons.AddRange(
 							(from button in options.CustomButtons
 							 select new TaskDialogButtonData(
-								TaskDialog.CustomButtonIDOffset + i,
+								TaskDialog.CUSTOM_BUTTON_ID_OFFSET + i,
 								button,
 								NormalButtonCommand,
 								DefaultButtonIndex == i++,
@@ -511,11 +454,10 @@ namespace TaskDialogInterop
 						int i = 0;
 						_commandLinks = (from button in options.CommandLinks
 										   select new TaskDialogButtonData(
-											   TaskDialog.CommandButtonIDOffset + i,
+											   TaskDialog.COMMAND_BUTTON_ID_OFFSET + i,
 											   button,
 											   CommandLinkCommand,
-											   DefaultButtonIndex == i++,
-											   false))
+											   DefaultButtonIndex == i++))
 										  .ToList();
 					}
 				}
@@ -541,11 +483,10 @@ namespace TaskDialogInterop
 						int i = 0;
 						_radioButtons = (from button in options.RadioButtons
 										 select new TaskDialogButtonData(
-											 TaskDialog.RadioButtonIDOffset + i,
+											 TaskDialog.RADIO_BUTTON_ID_OFFSET + i,
 											 button,
 											 RadioButtonCommand,
-											 DefaultButtonIndex == i++,
-											 false))
+											 DefaultButtonIndex == i++))
 										.ToList();
 					}
 				}
@@ -556,19 +497,14 @@ namespace TaskDialogInterop
 		/// <summary>
 		/// Gets the value of the button or command that was ultimately chosen.
 		/// </summary>
-		public int DialogResult
-		{
-			get { return _dialogResult; }
-		}
-		/// <summary>
+		public int DialogResult => _dialogResult;
+
+        /// <summary>
 		/// Gets the value of the chosen radio option.
 		/// </summary>
-		public int RadioResult
-		{
-			get { return _radioResult; }
-		}
+		public int RadioResult => _radioResult;
 
-		/// <summary>
+        /// <summary>
 		/// Gets the command associated with custom and common buttons.
 		/// </summary>
 		public ICommand NormalButtonCommand
@@ -581,13 +517,13 @@ namespace TaskDialogInterop
 						{
 							_dialogResult = i;
 
-							var args = new TaskDialogNotificationArgs();
+                            var args = new TaskDialogNotificationArgs
+                            {
+                                Config = options, Notification = TaskDialogNotification.ButtonClicked, ButtonId = i
+                            };
 
-							args.Config = this.options;
-							args.Notification = TaskDialogNotification.ButtonClicked;
-							args.ButtonId = i;
-							if (i > 100)
-								args.ButtonIndex = i % TaskDialog.CustomButtonIDOffset;
+                            if (i > 100)
+								args.ButtonIndex = i % TaskDialog.CUSTOM_BUTTON_ID_OFFSET;
 							else
 								args.ButtonIndex = TaskDialog.GetButtonIndexForCommonButton(args.Config.CommonButtons, args.ButtonId);
 
@@ -613,14 +549,16 @@ namespace TaskDialogInterop
 						{
 							_dialogResult = i;
 
-							var args = new TaskDialogNotificationArgs();
+                            var args = new TaskDialogNotificationArgs
+                            {
+                                Config = options,
+                                Notification = TaskDialogNotification.ButtonClicked,
+                                ButtonId = i,
+                                ButtonIndex = i % TaskDialog.CUSTOM_BUTTON_ID_OFFSET
+                            };
 
-							args.Config = this.options;
-							args.Notification = TaskDialogNotification.ButtonClicked;
-							args.ButtonId = i;
-							args.ButtonIndex = i % TaskDialog.CustomButtonIDOffset;
 
-							OnCallback(args);
+                            OnCallback(args);
 
 							RaiseRequestCloseEvent();
 						});
@@ -642,14 +580,16 @@ namespace TaskDialogInterop
 						{
 							_radioResult = i;
 
-							var args = new TaskDialogNotificationArgs();
+                            var args = new TaskDialogNotificationArgs
+                            {
+                                Config = options,
+                                Notification = TaskDialogNotification.RadioButtonClicked,
+                                ButtonId = i,
+                                ButtonIndex = i % TaskDialog.CUSTOM_BUTTON_ID_OFFSET
+                            };
 
-							args.Config = this.options;
-							args.Notification = TaskDialogNotification.RadioButtonClicked;
-							args.ButtonId = i;
-							args.ButtonIndex = i % TaskDialog.CustomButtonIDOffset;
 
-							OnCallback(args);
+                            OnCallback(args);
 						});
 				}
 
@@ -667,13 +607,15 @@ namespace TaskDialogInterop
 				{
 					_commandHyperlink = new RelayCommand<string>((uri) =>
 						{
-							var args = new TaskDialogNotificationArgs();
+                            var args = new TaskDialogNotificationArgs
+                            {
+                                Config = options,
+                                Notification = TaskDialogNotification.HyperlinkClicked,
+                                Hyperlink = uri
+                            };
 
-							args.Config = this.options;
-							args.Notification = TaskDialogNotification.HyperlinkClicked;
-							args.Hyperlink = uri;
 
-							OnCallback(args);
+                            OnCallback(args);
 						});
 				}
 
@@ -707,36 +649,33 @@ namespace TaskDialogInterop
 		/// </summary>
 		public void NotifyConstructed()
 		{
-			var args = new TaskDialogNotificationArgs();
+            var args = new TaskDialogNotificationArgs
+            {
+                Config = options, Notification = TaskDialogNotification.DialogConstructed
+            };
 
-			args.Config = this.options;
-			args.Notification = TaskDialogNotification.DialogConstructed;
 
-			OnCallback(args);
+            OnCallback(args);
 		}
 		/// <summary>
 		/// Notifies any callback handlers that the dialog has been created but not yet shown.
 		/// </summary>
 		public void NotifyCreated()
 		{
-			var args = new TaskDialogNotificationArgs();
+            var args = new TaskDialogNotificationArgs {Config = options, Notification = TaskDialogNotification.Created};
 
-			args.Config = this.options;
-			args.Notification = TaskDialogNotification.Created;
 
-			OnCallback(args);
+            OnCallback(args);
 		}
 		/// <summary>
 		/// Notifies any callback handlers periodically if a callback timer has been set.
 		/// </summary>
 		public void NotifyShown()
-		{
-			if (options.EnableCallbackTimer)
-			{
-				_callbackTimerStart = DateTime.Now;
-				_callbackTimer.Start();
-			}
-		}
+        {
+            if (!options.EnableCallbackTimer) return;
+            _callbackTimerStart = DateTime.Now;
+            _callbackTimer.Start();
+        }
 		/// <summary>
 		/// Notifies any callback handlers that the close button was clicked.
 		/// </summary>
@@ -745,12 +684,14 @@ namespace TaskDialogInterop
 			// Caused by clicking X or Alt+F4 or Esc, so notify via callback
 			if (!_requestingClose)
 			{
-				var args = new TaskDialogNotificationArgs();
+                var args = new TaskDialogNotificationArgs
+                {
+                    Config = options,
+                    Notification = TaskDialogNotification.ButtonClicked,
+                    ButtonId = (int) TaskDialogSimpleResult.Cancel
+                };
 
-				args.Config = this.options;
-				args.Notification = TaskDialogNotification.ButtonClicked;
-				args.ButtonId = (int)TaskDialogSimpleResult.Cancel;
-				args.ButtonIndex = TaskDialog.GetButtonIndexForCommonButton(options.CommonButtons, args.ButtonId);
+                args.ButtonIndex = TaskDialog.GetButtonIndexForCommonButton(options.CommonButtons, args.ButtonId);
 				//args.ButtonIndex = -1;
 				// See TaskDialogInterop.cs PrivateCallback method for why
 				//the above line is commented out
@@ -768,12 +709,13 @@ namespace TaskDialogInterop
 				_callbackTimer.Stop();
 			}
 
-			var args = new TaskDialogNotificationArgs();
+            var args = new TaskDialogNotificationArgs
+            {
+                Config = options, Notification = TaskDialogNotification.Destroyed
+            };
 
-			args.Config = this.options;
-			args.Notification = TaskDialogNotification.Destroyed;
 
-			OnCallback(args);
+            OnCallback(args);
 		}
 
 		/// <summary>
@@ -804,34 +746,25 @@ namespace TaskDialogInterop
 		/// </summary>
 		/// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
 		protected void OnPropertyChanged(PropertyChangedEventArgs e)
-		{
-			if (PropertyChanged != null)
-			{
-				PropertyChanged(this, e);
-			}
-		}
+        {
+            PropertyChanged?.Invoke(this, e);
+        }
 		/// <summary>
 		/// Raises the <see cref="E:RequestClose"/> event.
 		/// </summary>
 		/// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
 		protected void OnRequestClose(EventArgs e)
-		{
-			if (RequestClose != null)
-			{
-				RequestClose(this, e);
-			}
-		}
+        {
+            RequestClose?.Invoke(this, e);
+        }
 		/// <summary>
 		/// Raises the <see cref="E:RequestVerificationFocus"/> event.
 		/// </summary>
 		/// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
 		protected void OnRequestVerificationFocus(EventArgs e)
-		{
-			if (RequestVerificationFocus != null)
-			{
-				RequestVerificationFocus(this, e);
-			}
-		}
+        {
+            RequestVerificationFocus?.Invoke(this, e);
+        }
 		/// <summary>
 		/// Raises a callback.
 		/// </summary>
@@ -845,15 +778,14 @@ namespace TaskDialogInterop
 		}
 
 
-		private TaskDialogButtonData ConvertCommonButton(TaskDialogCommonButtons commonButton, System.Windows.Input.ICommand command = null, bool isDefault = false, bool isCancel = false)
+		private TaskDialogButtonData ConvertCommonButton(TaskDialogCommonButtons commonButton, ICommand command = null, bool isDefault = false, bool isCancel = false)
 		{
-			int id = 0;
+			int id;
 
 			switch (commonButton)
 			{
 				default:
-				case TaskDialogCommonButtons.None:
-					id = (int)TaskDialogSimpleResult.None;
+                    id = (int)TaskDialogSimpleResult.None;
 					break;
 				case TaskDialogCommonButtons.OK:
 					id = (int)TaskDialogSimpleResult.Ok;
@@ -884,8 +816,7 @@ namespace TaskDialogInterop
 			switch (commonButton)
 			{
 				default:
-				case TaskDialogCommonButtons.None:
-					text = String.Empty;
+                    text = string.Empty;
 					break;
 				case TaskDialogCommonButtons.OK:
 					text = TaskDialogOptions.LocalizedStrings.CommonButton_OK;
@@ -931,7 +862,7 @@ namespace TaskDialogInterop
 		{
 			var args = new TaskDialogNotificationArgs();
 
-			args.Config = this.options;
+			args.Config = options;
 			args.Notification = TaskDialogNotification.Timer;
 			args.TimerTickCount = Convert.ToUInt32(Math.Round(DateTime.Now.Subtract(_callbackTimerStart).TotalMilliseconds, 0));
 
@@ -941,17 +872,14 @@ namespace TaskDialogInterop
 		private System.Windows.Media.ImageSource ConvertIconToImageSource(TaskDialogIcon icon, Icon customIcon, bool isLarge)
 		{
 			System.Windows.Media.ImageSource iconSource = null;
-			System.Drawing.Icon sysIcon = null;
-			System.Drawing.Bitmap altBmp = null;
+			Icon sysIcon = null;
+			Bitmap altBmp = null;
 
 			try
 			{
 				switch (icon)
 				{
-					default:
-					case TaskDialogIcon.None:
-						break;
-					case TaskDialogIcon.Information:
+                    case TaskDialogIcon.Information:
 						sysIcon = SystemIcons.Information;
 						break;
 					case TaskDialogIcon.Warning:
@@ -961,15 +889,8 @@ namespace TaskDialogInterop
 						sysIcon = SystemIcons.Error;
 						break;
 					case TaskDialogIcon.Shield:
-						if (isLarge)
-						{
-							altBmp = Properties.Resources.shield_32;
-						}
-						else
-						{
-							altBmp = Properties.Resources.shield_16;
-						}
-						break;
+						altBmp = isLarge ? Resources.shield_32 : Resources.shield_16;
+                        break;
 				}
 
 				// Custom Icons always take priority
@@ -1000,11 +921,9 @@ namespace TaskDialogInterop
 			{
 				// Not responsible for disposing of custom icons
 
-				if (sysIcon != null)
-					sysIcon.Dispose();
-				if (altBmp != null)
-					altBmp.Dispose();
-			}
+                sysIcon?.Dispose();
+                altBmp?.Dispose();
+            }
 
 			return iconSource;
 		}

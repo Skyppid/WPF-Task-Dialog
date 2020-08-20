@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace TaskDialogInterop
 {
@@ -158,11 +155,11 @@ namespace TaskDialogInterop
 			{
 				var tdr = (TaskDialogResult)obj;
 
-				result = this.Result == tdr.Result
-					&& this.VerificationChecked == tdr.VerificationChecked
-					&& this.RadioButtonResult == tdr.RadioButtonResult
-					&& this.CommandButtonResult == tdr.CommandButtonResult
-					&& this.CustomButtonResult == tdr.CustomButtonResult;
+				result = Result == tdr.Result
+					&& VerificationChecked == tdr.VerificationChecked
+					&& RadioButtonResult == tdr.RadioButtonResult
+					&& CommandButtonResult == tdr.CommandButtonResult
+					&& CustomButtonResult == tdr.CustomButtonResult;
 			}
 			catch (InvalidCastException) // obj isn't of type TaskDialogResult
 			{

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Runtime.InteropServices;
 using System.Diagnostics.CodeAnalysis;
 
@@ -322,7 +319,7 @@ namespace TaskDialogInterop
 	/// <summary>
 	/// TASKDIALOGCONFIG taken from commctl.h.
 	/// </summary>
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable", Justification = "Native resources are all owned by managed code and should not be disposed here.")]
+	[SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable", Justification = "Native resources are all owned by managed code and should not be disposed here.")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 1)]
 	internal struct TASKDIALOGCONFIG
 	{

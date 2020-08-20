@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace TaskDialogInterop
 {
@@ -123,11 +117,11 @@ namespace TaskDialogInterop
 		/// </summary>
 		public EmulatedTaskDialog()
 		{
-			this.Loaded += new RoutedEventHandler(TaskDialog_Loaded);
-			this.SourceInitialized += new EventHandler(TaskDialog_SourceInitialized);
-			this.KeyDown += new KeyEventHandler(TaskDialog_KeyDown);
-			this.Closing += new System.ComponentModel.CancelEventHandler(TaskDialog_Closing);
-			this.Closed += new EventHandler(TaskDialog_Closed);
+			Loaded += TaskDialog_Loaded;
+			SourceInitialized += TaskDialog_SourceInitialized;
+			KeyDown += TaskDialog_KeyDown;
+			Closing += TaskDialog_Closing;
+			Closed += TaskDialog_Closed;
 		}
 
 		/// <summary>
@@ -135,121 +129,121 @@ namespace TaskDialogInterop
 		/// </summary>
 		public Style MainInstructionStyle
 		{
-			get { return (Style)GetValue(MainInstructionStyleProperty); }
-			set { SetValue(MainInstructionStyleProperty, value); }
-		}
+			get => (Style)GetValue(MainInstructionStyleProperty);
+            set => SetValue(MainInstructionStyleProperty, value);
+        }
 		/// <summary>
 		/// Gets or sets the style for the content text.
 		/// </summary>
 		public Style ContentTextStyle
 		{
-			get { return (Style)GetValue(ContentTextStyleProperty); }
-			set { SetValue(ContentTextStyleProperty, value); }
-		}
+			get => (Style)GetValue(ContentTextStyleProperty);
+            set => SetValue(ContentTextStyleProperty, value);
+        }
 		/// <summary>
 		/// Gets or sets the style for the expanded content text.
 		/// </summary>
 		public Style ContentExpandedTextStyle
 		{
-			get { return (Style)GetValue(ContentExpandedTextStyleProperty); }
-			set { SetValue(ContentExpandedTextStyleProperty, value); }
-		}
+			get => (Style)GetValue(ContentExpandedTextStyleProperty);
+            set => SetValue(ContentExpandedTextStyleProperty, value);
+        }
 		/// <summary>
 		/// Gets or sets the style for the progress bar.
 		/// </summary>
 		public Style ProgressBarStyle
 		{
-			get { return (Style)GetValue(ProgressBarStyleProperty); }
-			set { SetValue(ProgressBarStyleProperty, value); }
-		}
+			get => (Style)GetValue(ProgressBarStyleProperty);
+            set => SetValue(ProgressBarStyleProperty, value);
+        }
 		/// <summary>
 		/// Gets or sets the style for radio buttons.
 		/// </summary>
 		public Style RadioButtonStyle
 		{
-			get { return (Style)GetValue(RadioButtonStyleProperty); }
-			set { SetValue(RadioButtonStyleProperty, value); }
-		}
+			get => (Style)GetValue(RadioButtonStyleProperty);
+            set => SetValue(RadioButtonStyleProperty, value);
+        }
 		/// <summary>
 		/// Gets or sets the style for command links.
 		/// </summary>
 		public Style CommandLinkStyle
 		{
-			get { return (Style)GetValue(CommandLinkStyleProperty); }
-			set { SetValue(CommandLinkStyleProperty, value); }
-		}
+			get => (Style)GetValue(CommandLinkStyleProperty);
+            set => SetValue(CommandLinkStyleProperty, value);
+        }
 		/// <summary>
 		/// Gets or sets the style for the buttons area.
 		/// </summary>
 		public Style ButtonsAreaStyle
 		{
-			get { return (Style)GetValue(ButtonsAreaStyleProperty); }
-			set { SetValue(ButtonsAreaStyleProperty, value); }
-		}
+			get => (Style)GetValue(ButtonsAreaStyleProperty);
+            set => SetValue(ButtonsAreaStyleProperty, value);
+        }
 		/// <summary>
 		/// Gets or sets the style for the show details button.
 		/// </summary>
 		public Style ShowDetailsButtonStyle
 		{
-			get { return (Style)GetValue(ShowDetailsButtonStyleProperty); }
-			set { SetValue(ShowDetailsButtonStyleProperty, value); }
-		}
+			get => (Style)GetValue(ShowDetailsButtonStyleProperty);
+            set => SetValue(ShowDetailsButtonStyleProperty, value);
+        }
 		/// <summary>
 		/// Gets or sets the style for the verification check box.
 		/// </summary>
 		public Style VerificationCheckBoxStyle
 		{
-			get { return (Style)GetValue(VerificationCheckBoxStyleProperty); }
-			set { SetValue(VerificationCheckBoxStyleProperty, value); }
-		}
+			get => (Style)GetValue(VerificationCheckBoxStyleProperty);
+            set => SetValue(VerificationCheckBoxStyleProperty, value);
+        }
 		/// <summary>
 		/// Gets or sets the style for the verification check box text.
 		/// </summary>
 		public Style VerificationTextStyle
 		{
-			get { return (Style)GetValue(VerificationTextStyleProperty); }
-			set { SetValue(VerificationTextStyleProperty, value); }
-		}
+			get => (Style)GetValue(VerificationTextStyleProperty);
+            set => SetValue(VerificationTextStyleProperty, value);
+        }
 		/// <summary>
 		/// Gets or sets the style for normal command buttons.
 		/// </summary>
 		public Style CommandButtonStyle
 		{
-			get { return (Style)GetValue(CommandButtonStyleProperty); }
-			set { SetValue(CommandButtonStyleProperty, value); }
-		}
+			get => (Style)GetValue(CommandButtonStyleProperty);
+            set => SetValue(CommandButtonStyleProperty, value);
+        }
 		/// <summary>
 		/// Gets or sets the style for the footer area.
 		/// </summary>
 		public Style FooterAreaStyle
 		{
-			get { return (Style)GetValue(FooterAreaStyleProperty); }
-			set { SetValue(FooterAreaStyleProperty, value); }
-		}
+			get => (Style)GetValue(FooterAreaStyleProperty);
+            set => SetValue(FooterAreaStyleProperty, value);
+        }
 		/// <summary>
 		/// Gets or sets the style for the footer area.
 		/// </summary>
 		public Style FooterInnerAreaStyle
 		{
-			get { return (Style)GetValue(FooterInnerAreaStyleProperty); }
-			set { SetValue(FooterInnerAreaStyleProperty, value); }
-		}
+			get => (Style)GetValue(FooterInnerAreaStyleProperty);
+            set => SetValue(FooterInnerAreaStyleProperty, value);
+        }
 		/// <summary>
 		/// Gets or sets the style for the expanded footer area.
 		/// </summary>
 		public Style FooterExpandedAreaStyle
 		{
-			get { return (Style)GetValue(FooterExpandedAreaStyleProperty); }
-			set { SetValue(FooterExpandedAreaStyleProperty, value); }
-		}
+			get => (Style)GetValue(FooterExpandedAreaStyleProperty);
+            set => SetValue(FooterExpandedAreaStyleProperty, value);
+        }
 		/// <summary>
 		/// Gets or sets the style for the expanded footer area.
 		/// </summary>
 		public Style FooterExpandedInnerAreaStyle
 		{
-			get { return (Style)GetValue(FooterExpandedInnerAreaStyleProperty); }
-			set { SetValue(FooterExpandedInnerAreaStyleProperty, value); }
-		}
+			get => (Style)GetValue(FooterExpandedInnerAreaStyleProperty);
+            set => SetValue(FooterExpandedInnerAreaStyleProperty, value);
+        }
 
 		/// <summary>
 		/// When overridden in a derived class, is invoked whenever application code
@@ -266,28 +260,24 @@ namespace TaskDialogInterop
 			_verificationCheckBox = GetTemplateChild(VerificationCheckBoxTemplateName) as UIElement;
 		}
 
-		private EmulatedTaskDialogViewModel ViewModel
-		{
-			get { return this.DataContext as EmulatedTaskDialogViewModel; }
-		}
+		private EmulatedTaskDialogViewModel ViewModel => DataContext as EmulatedTaskDialogViewModel;
 
-		private void TaskDialog_Loaded(object sender, RoutedEventArgs e)
+        private void TaskDialog_Loaded(object sender, RoutedEventArgs e)
 		{
 			if (ViewModel != null)
 			{
-				ViewModel.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(ViewModel_PropertyChanged);
-				ViewModel.RequestClose += new EventHandler(ViewModel_RequestClose);
-				ViewModel.RequestVerificationFocus += new EventHandler(ViewModel_RequestVerificationFocus);
+				ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+				ViewModel.RequestClose += ViewModel_RequestClose;
+				ViewModel.RequestVerificationFocus += ViewModel_RequestVerificationFocus;
 
-				this.WindowStartupLocation = ViewModel.StartPosition;
+				WindowStartupLocation = ViewModel.StartPosition;
 
 				// Attempt to set initial focus on any button marked IsDefault
 				var defaultButton = GetDefaultButton(this);
 
-				if (defaultButton != null)
-					defaultButton.Focus();
+                defaultButton?.Focus();
 
-				ConvertToHyperlinkedText(_contentText, ViewModel.Content);
+                ConvertToHyperlinkedText(_contentText, ViewModel.Content);
 				ConvertToHyperlinkedText(_contentExpandedInfo, ViewModel.ContentExpandedInfo);
 				ConvertToHyperlinkedText(_footerExpandedInfo, ViewModel.FooterExpandedInfo);
 				ConvertToHyperlinkedText(_footerText, ViewModel.FooterText);
@@ -313,12 +303,7 @@ namespace TaskDialogInterop
 				// Play the appropriate sound
 				switch (ViewModel.MainIconType)
 				{
-					default:
-					case TaskDialogIcon.None:
-					case TaskDialogIcon.Shield:
-						// No sound
-						break;
-					case TaskDialogIcon.Warning:
+                    case TaskDialogIcon.Warning:
 						System.Media.SystemSounds.Exclamation.Play();
 						break;
 					case TaskDialogIcon.Error:
@@ -364,7 +349,7 @@ namespace TaskDialogInterop
 					&& e.Key == Key.Escape)
 				{
 					e.Handled = true;
-					this.DialogResult = false;
+					DialogResult = false;
 					Close();
 				}
 			}
@@ -391,36 +376,34 @@ namespace TaskDialogInterop
 		}
 		private void ViewModel_RequestClose(object sender, EventArgs e)
 		{
-			this.Close();
+			Close();
 		}
 		private void ViewModel_RequestVerificationFocus(object sender, EventArgs e)
 		{
 			_verificationCheckBox.Focus();
 		}
 		private void Hyperlink_Click(object sender, EventArgs e)
-		{
-			if (sender is Hyperlink)
-			{
-				string uri = (sender as Hyperlink).Tag.ToString();
+        {
+            if (!(sender is Hyperlink hyperlink)) return;
+            string uri = hyperlink.Tag.ToString();
 
-				if (ViewModel.HyperlinkCommand.CanExecute(uri))
-					ViewModel.HyperlinkCommand.Execute(uri);
-			}
-		}
+            if (ViewModel.HyperlinkCommand.CanExecute(uri))
+                ViewModel.HyperlinkCommand.Execute(uri);
+        }
 
 		private void ConvertToHyperlinkedText(TextBlock textBlock, string text)
 		{
 			foreach (Inline inline in textBlock.Inlines)
 			{
-				if (inline is Hyperlink)
+				if (inline is Hyperlink hyperlink)
 				{
-					(inline as Hyperlink).Click -= Hyperlink_Click;
+					hyperlink.Click -= Hyperlink_Click;
 				}
 			}
 
 			textBlock.Inlines.Clear();
 
-			if (String.IsNullOrEmpty(text))
+			if (string.IsNullOrEmpty(text))
 				return;
 
 			List<Hyperlink> hyperlinks = new List<Hyperlink>();
@@ -454,20 +437,15 @@ namespace TaskDialogInterop
 			{
 				var child = VisualTreeHelper.GetChild(parent, i);
 
-				if (child != null)
-				{
-					var childType = child.GetType();
+                var childType = child.GetType();
 
-					if (typeof(Button).IsAssignableFrom(childType))
-					{
-						var button = child as Button;
+                if (typeof(Button).IsAssignableFrom(childType))
+                {
+                    if (child is Button button && button.IsDefault)
+                        return button;
+                }
 
-						if (button.IsDefault)
-							return button;
-					}
-				}
-
-				// Test its children
+                // Test its children
 				var childButton = GetDefaultButton(child);
 
 				if (childButton != null)

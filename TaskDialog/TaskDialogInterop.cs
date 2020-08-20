@@ -222,8 +222,8 @@ namespace TaskDialogInterop
 		/// <param name="text">The string that appears on the button.</param>
 		public TaskDialogButton(int id, string text)
 		{
-			this.buttonId = id;
-			this.buttonText = text;
+			buttonId = id;
+			buttonText = text;
 		}
 
 		/// <summary>
@@ -231,18 +231,18 @@ namespace TaskDialogInterop
 		/// </summary>
 		public int ButtonId
 		{
-			get { return this.buttonId; }
-			set { this.buttonId = value; }
-		}
+			get => buttonId;
+            set => buttonId = value;
+        }
 
 		/// <summary>
 		/// The string that appears on the button.
 		/// </summary>
 		public string ButtonText
 		{
-			get { return this.buttonText; }
-			set { this.buttonText = value; }
-		}
+			get => buttonText;
+            set => buttonText = value;
+        }
 	}
 
 	/// <summary>
@@ -438,7 +438,7 @@ namespace TaskDialogInterop
 		/// </summary>
 		public NativeTaskDialog()
 		{
-			this.Reset();
+			Reset();
 		}
 
 		/// <summary>
@@ -452,35 +452,32 @@ namespace TaskDialogInterop
 				OperatingSystem os = Environment.OSVersion;
 				if (os.Platform != PlatformID.Win32NT)
 					return false;
-				return (os.Version.CompareTo(NativeTaskDialog.RequiredOSVersion) >= 0);
+				return (os.Version.CompareTo(RequiredOSVersion) >= 0);
 			}
 		}
 
 		/// <summary>
 		/// The minimum Windows version needed to support TaskDialog.
 		/// </summary>
-		public static Version RequiredOSVersion
-		{
-			get { return new Version(6, 0, 5243); }
-		}
+		public static Version RequiredOSVersion => new Version(6, 0, 5243);
 
-		/// <summary>
+        /// <summary>
 		/// The string to be used for the dialog box title. If this parameter is NULL, the filename of the executable program is used.
 		/// </summary>
 		public string WindowTitle
 		{
-			get { return this.windowTitle; }
-			set { this.windowTitle = value; }
-		}
+			get => windowTitle;
+            set => windowTitle = value;
+        }
 
 		/// <summary>
 		/// The string to be used for the main instruction.
 		/// </summary>
 		public string MainInstruction
 		{
-			get { return this.mainInstruction; }
-			set { this.mainInstruction = value; }
-		}
+			get => mainInstruction;
+            set => mainInstruction = value;
+        }
 
 		/// <summary>
 		/// The string to be used for the dialog’s primary content. If the EnableHyperlinks member is true,
@@ -489,9 +486,9 @@ namespace TaskDialogInterop
 		/// </summary>
 		public string Content
 		{
-			get { return this.content; }
-			set { this.content = value; }
-		}
+			get => content;
+            set => content = value;
+        }
 
 		/// <summary>
 		/// Specifies the push buttons displayed in the dialog box. This parameter may be a combination of flags.
@@ -500,9 +497,9 @@ namespace TaskDialogInterop
 		/// </summary>
 		public TaskDialogCommonButtons CommonButtons
 		{
-			get { return this.commonButtons; }
-			set { this.commonButtons = value; }
-		}
+			get => commonButtons;
+            set => commonButtons = value;
+        }
 
 		/// <summary>
 		/// Specifies a built in icon for the main icon in the dialog. If this is set to none
@@ -510,9 +507,9 @@ namespace TaskDialogInterop
 		/// </summary>
 		public TaskDialogIcon MainIcon
 		{
-			get { return this.mainIcon; }
-			set { this.mainIcon = value; }
-		}
+			get => mainIcon;
+            set => mainIcon = value;
+        }
 
 		/// <summary>
 		/// Specifies a custom in icon for the main icon in the dialog. If this is set to none
@@ -520,9 +517,9 @@ namespace TaskDialogInterop
 		/// </summary>
 		public Icon CustomMainIcon
 		{
-			get { return this.customMainIcon; }
-			set { this.customMainIcon = value; }
-		}
+			get => customMainIcon;
+            set => customMainIcon = value;
+        }
 
 		/// <summary>
 		/// Specifies a built in icon for the icon to be displayed in the footer area of the
@@ -531,9 +528,9 @@ namespace TaskDialogInterop
 		/// </summary>
 		public TaskDialogIcon FooterIcon
 		{
-			get { return this.footerIcon; }
-			set { this.footerIcon = value; }
-		}
+			get => footerIcon;
+            set => footerIcon = value;
+        }
 
 		/// <summary>
 		/// Specifies a custom icon for the icon to be displayed in the footer area of the
@@ -542,9 +539,9 @@ namespace TaskDialogInterop
 		/// </summary>
 		public Icon CustomFooterIcon
 		{
-			get { return this.customFooterIcon; }
-			set { this.customFooterIcon = value; }
-		}
+			get => customFooterIcon;
+            set => customFooterIcon = value;
+        }
 
 		/// <summary>
 		/// Specifies the custom push buttons to display in the dialog. Use CommonButtons member for
@@ -555,18 +552,10 @@ namespace TaskDialogInterop
 		[SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")] // Returns a reference, not a copy.
 		public TaskDialogButton[] Buttons
 		{
-			get
+			get => buttons;
+            set
 			{
-				return this.buttons;
-			}
-			set
-			{
-				if (value == null)
-				{
-					throw new ArgumentNullException("value");
-				}
-
-				this.buttons = value;
+                buttons = value ?? throw new ArgumentNullException(nameof(value));
 			}
 		}
 
@@ -577,19 +566,11 @@ namespace TaskDialogInterop
 		[SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")] // Returns a reference, not a copy.
 		public TaskDialogButton[] RadioButtons
 		{
-			get
-			{
-				return this.radioButtons;
-			}
+			get => radioButtons;
 
-			set
+            set
 			{
-				if (value == null)
-				{
-					throw new ArgumentNullException("value");
-				}
-
-				this.radioButtons = value;
+                radioButtons = value ?? throw new ArgumentNullException(nameof(value));
 			}
 		}
 
@@ -603,9 +584,9 @@ namespace TaskDialogInterop
 		/// </summary>
 		public bool EnableHyperlinks
 		{
-			get { return (this.flags & TASKDIALOG_FLAGS.TDF_ENABLE_HYPERLINKS) != 0; }
-			set { this.SetFlag(TASKDIALOG_FLAGS.TDF_ENABLE_HYPERLINKS, value); }
-		}
+			get => (flags & TASKDIALOG_FLAGS.TDF_ENABLE_HYPERLINKS) != 0;
+            set => SetFlag(TASKDIALOG_FLAGS.TDF_ENABLE_HYPERLINKS, value);
+        }
 
 		/// <summary>
 		/// Indicates that the dialog should be able to be closed using Alt-F4, Escape and the title bar’s
@@ -613,9 +594,9 @@ namespace TaskDialogInterop
 		/// </summary>
 		public bool AllowDialogCancellation
 		{
-			get { return (this.flags & TASKDIALOG_FLAGS.TDF_ALLOW_DIALOG_CANCELLATION) != 0; }
-			set { this.SetFlag(TASKDIALOG_FLAGS.TDF_ALLOW_DIALOG_CANCELLATION, value); }
-		}
+			get => (flags & TASKDIALOG_FLAGS.TDF_ALLOW_DIALOG_CANCELLATION) != 0;
+            set => SetFlag(TASKDIALOG_FLAGS.TDF_ALLOW_DIALOG_CANCELLATION, value);
+        }
 
 		/// <summary>
 		/// Indicates that the buttons specified in the Buttons member should be displayed as command links
@@ -626,9 +607,9 @@ namespace TaskDialogInterop
 		/// </summary>
 		public bool UseCommandLinks
 		{
-			get { return (this.flags & TASKDIALOG_FLAGS.TDF_USE_COMMAND_LINKS) != 0; }
-			set { this.SetFlag(TASKDIALOG_FLAGS.TDF_USE_COMMAND_LINKS, value); }
-		}
+			get => (flags & TASKDIALOG_FLAGS.TDF_USE_COMMAND_LINKS) != 0;
+            set => SetFlag(TASKDIALOG_FLAGS.TDF_USE_COMMAND_LINKS, value);
+        }
 
 		/// <summary>
 		/// Indicates that the buttons specified in the Buttons member should be displayed as command links
@@ -639,9 +620,9 @@ namespace TaskDialogInterop
 		/// </summary>
 		public bool UseCommandLinksNoIcon
 		{
-			get { return (this.flags & TASKDIALOG_FLAGS.TDF_USE_COMMAND_LINKS_NO_ICON) != 0; }
-			set { this.SetFlag(TASKDIALOG_FLAGS.TDF_USE_COMMAND_LINKS_NO_ICON, value); }
-		}
+			get => (flags & TASKDIALOG_FLAGS.TDF_USE_COMMAND_LINKS_NO_ICON) != 0;
+            set => SetFlag(TASKDIALOG_FLAGS.TDF_USE_COMMAND_LINKS_NO_ICON, value);
+        }
 
 		/// <summary>
 		/// Indicates that the string specified by the ExpandedInformation member should be displayed at the
@@ -650,9 +631,9 @@ namespace TaskDialogInterop
 		/// </summary>
 		public bool ExpandFooterArea
 		{
-			get { return (this.flags & TASKDIALOG_FLAGS.TDF_EXPAND_FOOTER_AREA) != 0; }
-			set { this.SetFlag(TASKDIALOG_FLAGS.TDF_EXPAND_FOOTER_AREA, value); }
-		}
+			get => (flags & TASKDIALOG_FLAGS.TDF_EXPAND_FOOTER_AREA) != 0;
+            set => SetFlag(TASKDIALOG_FLAGS.TDF_EXPAND_FOOTER_AREA, value);
+        }
 
 		/// <summary>
 		/// Indicates that the string specified by the ExpandedInformation member should be displayed
@@ -661,9 +642,9 @@ namespace TaskDialogInterop
 		/// </summary>
 		public bool ExpandedByDefault
 		{
-			get { return (this.flags & TASKDIALOG_FLAGS.TDF_EXPANDED_BY_DEFAULT) != 0; }
-			set { this.SetFlag(TASKDIALOG_FLAGS.TDF_EXPANDED_BY_DEFAULT, value); }
-		}
+			get => (flags & TASKDIALOG_FLAGS.TDF_EXPANDED_BY_DEFAULT) != 0;
+            set => SetFlag(TASKDIALOG_FLAGS.TDF_EXPANDED_BY_DEFAULT, value);
+        }
 
 		/// <summary>
 		/// Indicates that the verification checkbox in the dialog should be checked when the dialog is
@@ -671,36 +652,36 @@ namespace TaskDialogInterop
 		/// </summary>
 		public bool VerificationFlagChecked
 		{
-			get { return (this.flags & TASKDIALOG_FLAGS.TDF_VERIFICATION_FLAG_CHECKED) != 0; }
-			set { this.SetFlag(TASKDIALOG_FLAGS.TDF_VERIFICATION_FLAG_CHECKED, value); }
-		}
+			get => (flags & TASKDIALOG_FLAGS.TDF_VERIFICATION_FLAG_CHECKED) != 0;
+            set => SetFlag(TASKDIALOG_FLAGS.TDF_VERIFICATION_FLAG_CHECKED, value);
+        }
 
 		/// <summary>
 		/// Indicates that a Progress Bar should be displayed.
 		/// </summary>
 		public bool ShowProgressBar
 		{
-			get { return (this.flags & TASKDIALOG_FLAGS.TDF_SHOW_PROGRESS_BAR) != 0; }
-			set { this.SetFlag(TASKDIALOG_FLAGS.TDF_SHOW_PROGRESS_BAR, value); }
-		}
+			get => (flags & TASKDIALOG_FLAGS.TDF_SHOW_PROGRESS_BAR) != 0;
+            set => SetFlag(TASKDIALOG_FLAGS.TDF_SHOW_PROGRESS_BAR, value);
+        }
 
 		/// <summary>
 		/// Indicates that an Marquee Progress Bar should be displayed.
 		/// </summary>
 		public bool ShowMarqueeProgressBar
 		{
-			get { return (this.flags & TASKDIALOG_FLAGS.TDF_SHOW_MARQUEE_PROGRESS_BAR) != 0; }
-			set { this.SetFlag(TASKDIALOG_FLAGS.TDF_SHOW_MARQUEE_PROGRESS_BAR, value); }
-		}
+			get => (flags & TASKDIALOG_FLAGS.TDF_SHOW_MARQUEE_PROGRESS_BAR) != 0;
+            set => SetFlag(TASKDIALOG_FLAGS.TDF_SHOW_MARQUEE_PROGRESS_BAR, value);
+        }
 
 		/// <summary>
 		/// Indicates that the TaskDialog’s callback should be called approximately every 200 milliseconds.
 		/// </summary>
 		public bool CallbackTimer
 		{
-			get { return (this.flags & TASKDIALOG_FLAGS.TDF_CALLBACK_TIMER) != 0; }
-			set { this.SetFlag(TASKDIALOG_FLAGS.TDF_CALLBACK_TIMER, value); }
-		}
+			get => (flags & TASKDIALOG_FLAGS.TDF_CALLBACK_TIMER) != 0;
+            set => SetFlag(TASKDIALOG_FLAGS.TDF_CALLBACK_TIMER, value);
+        }
 
 		/// <summary>
 		/// Indicates that the TaskDialog should be positioned (centered) relative to the owner window
@@ -709,36 +690,36 @@ namespace TaskDialogInterop
 		/// </summary>
 		public bool PositionRelativeToWindow
 		{
-			get { return (this.flags & TASKDIALOG_FLAGS.TDF_POSITION_RELATIVE_TO_WINDOW) != 0; }
-			set { this.SetFlag(TASKDIALOG_FLAGS.TDF_POSITION_RELATIVE_TO_WINDOW, value); }
-		}
+			get => (flags & TASKDIALOG_FLAGS.TDF_POSITION_RELATIVE_TO_WINDOW) != 0;
+            set => SetFlag(TASKDIALOG_FLAGS.TDF_POSITION_RELATIVE_TO_WINDOW, value);
+        }
 
 		/// <summary>
 		/// Indicates that the TaskDialog should have right to left layout.
 		/// </summary>
 		public bool RightToLeftLayout
 		{
-			get { return (this.flags & TASKDIALOG_FLAGS.TDF_RTL_LAYOUT) != 0; }
-			set { this.SetFlag(TASKDIALOG_FLAGS.TDF_RTL_LAYOUT, value); }
-		}
+			get => (flags & TASKDIALOG_FLAGS.TDF_RTL_LAYOUT) != 0;
+            set => SetFlag(TASKDIALOG_FLAGS.TDF_RTL_LAYOUT, value);
+        }
 
 		/// <summary>
 		/// Indicates that the TaskDialog should have no default radio button.
 		/// </summary>
 		public bool NoDefaultRadioButton
 		{
-			get { return (this.flags & TASKDIALOG_FLAGS.TDF_NO_DEFAULT_RADIO_BUTTON) != 0; }
-			set { this.SetFlag(TASKDIALOG_FLAGS.TDF_NO_DEFAULT_RADIO_BUTTON, value); }
-		}
+			get => (flags & TASKDIALOG_FLAGS.TDF_NO_DEFAULT_RADIO_BUTTON) != 0;
+            set => SetFlag(TASKDIALOG_FLAGS.TDF_NO_DEFAULT_RADIO_BUTTON, value);
+        }
 
 		/// <summary>
 		/// Indicates that the TaskDialog can be minimised. Works only if there if parent window is null. Will enable cancellation also.
 		/// </summary>
 		public bool CanBeMinimized
 		{
-			get { return (this.flags & TASKDIALOG_FLAGS.TDF_CAN_BE_MINIMIZED) != 0; }
-			set { this.SetFlag(TASKDIALOG_FLAGS.TDF_CAN_BE_MINIMIZED, value); }
-		}
+			get => (flags & TASKDIALOG_FLAGS.TDF_CAN_BE_MINIMIZED) != 0;
+            set => SetFlag(TASKDIALOG_FLAGS.TDF_CAN_BE_MINIMIZED, value);
+        }
 
 		/// <summary>
 		/// Indicates the default button for the dialog. This may be any of the values specified
@@ -749,9 +730,9 @@ namespace TaskDialogInterop
 		/// </summary>
 		public int DefaultButton
 		{
-			get { return this.defaultButton; }
-			set { this.defaultButton = value; }
-		}
+			get => defaultButton;
+            set => defaultButton = value;
+        }
 
 		/// <summary>
 		/// Indicates the default radio button for the dialog. This may be any of the values specified
@@ -762,9 +743,9 @@ namespace TaskDialogInterop
 		/// </summary>
 		public int DefaultRadioButton
 		{
-			get { return this.defaultRadioButton; }
-			set { this.defaultRadioButton = value; }
-		}
+			get => defaultRadioButton;
+            set => defaultRadioButton = value;
+        }
 
 		/// <summary>
 		/// The string to be used to label the verification checkbox. If this member is null, the
@@ -772,9 +753,9 @@ namespace TaskDialogInterop
 		/// </summary>
 		public string VerificationText
 		{
-			get { return this.verificationText; }
-			set { this.verificationText = value; }
-		}
+			get => verificationText;
+            set => verificationText = value;
+        }
 
 		/// <summary>
 		/// The string to be used for displaying additional information. The additional information is
@@ -785,9 +766,9 @@ namespace TaskDialogInterop
 		/// </summary>
 		public string ExpandedInformation
 		{
-			get { return this.expandedInformation; }
-			set { this.expandedInformation = value; }
-		}
+			get => expandedInformation;
+            set => expandedInformation = value;
+        }
 
 		/// <summary>
 		/// The string to be used to label the button for collapsing the expanded information. This
@@ -797,9 +778,9 @@ namespace TaskDialogInterop
 		/// </summary>
 		public string ExpandedControlText
 		{
-			get { return this.expandedControlText; }
-			set { this.expandedControlText = value; }
-		}
+			get => expandedControlText;
+            set => expandedControlText = value;
+        }
 
 		/// <summary>
 		/// The string to be used to label the button for expanding the expanded information. This
@@ -809,9 +790,9 @@ namespace TaskDialogInterop
 		/// </summary>
 		public string CollapsedControlText
 		{
-			get { return this.collapsedControlText; }
-			set { this.collapsedControlText = value; }
-		}
+			get => collapsedControlText;
+            set => collapsedControlText = value;
+        }
 
 		/// <summary>
 		/// The string to be used in the footer area of the dialog box. If the EnableHyperlinks member
@@ -821,69 +802,69 @@ namespace TaskDialogInterop
 		/// </summary>
 		public string Footer
 		{
-			get { return this.footer; }
-			set { this.footer = value; }
-		}
+			get => footer;
+            set => footer = value;
+        }
 
 		/// <summary>
 		/// width of the Task Dialog's client area in DLU's. If 0, Task Dialog will calculate the ideal width.
 		/// </summary>
 		public uint Width
 		{
-			get { return this.width; }
-			set { this.width = value; }
-		}
+			get => width;
+            set => width = value;
+        }
 
 		/// <summary>
 		/// The callback that receives messages from the Task Dialog when various events occur.
 		/// </summary>
 		public TaskDialogCallback Callback
 		{
-			get { return this.callback; }
-			set { this.callback = value; }
-		}
+			get => callback;
+            set => callback = value;
+        }
 
 		/// <summary>
 		/// Reference that is passed to the callback.
 		/// </summary>
 		public object CallbackData
 		{
-			get { return this.callbackData; }
-			set { this.callbackData = value; }
-		}
+			get => callbackData;
+            set => callbackData = value;
+        }
 
 		internal TaskDialogOptions Config
 		{
-			get { return this.config; }
-			set { this.config = value; }
-		}
+			get => config;
+            set => config = value;
+        }
 
 		/// <summary>
 		/// Resets the Task Dialog to the state when first constructed, all properties set to their default value.
 		/// </summary>
 		public void Reset()
 		{
-			this.windowTitle = null;
-			this.mainInstruction = null;
-			this.content = null;
-			this.commonButtons = 0;
-			this.mainIcon = TaskDialogIcon.None;
-			this.customMainIcon = null;
-			this.footerIcon = TaskDialogIcon.None;
-			this.customFooterIcon = null;
-			this.buttons = new TaskDialogButton[0];
-			this.radioButtons = new TaskDialogButton[0];
-			this.flags = 0;
-			this.defaultButton = 0;
-			this.defaultRadioButton = 0;
-			this.verificationText = null;
-			this.expandedInformation = null;
-			this.expandedControlText = null;
-			this.collapsedControlText = null;
-			this.footer = null;
-			this.callback = null;
-			this.callbackData = null;
-			this.width = 0;
+			windowTitle = null;
+			mainInstruction = null;
+			content = null;
+			commonButtons = 0;
+			mainIcon = TaskDialogIcon.None;
+			customMainIcon = null;
+			footerIcon = TaskDialogIcon.None;
+			customFooterIcon = null;
+			buttons = new TaskDialogButton[0];
+			radioButtons = new TaskDialogButton[0];
+			flags = 0;
+			defaultButton = 0;
+			defaultRadioButton = 0;
+			verificationText = null;
+			expandedInformation = null;
+			expandedControlText = null;
+			collapsedControlText = null;
+			footer = null;
+			callback = null;
+			callbackData = null;
+			width = 0;
 		}
 
 		/// <summary>
@@ -895,9 +876,7 @@ namespace TaskDialogInterop
 		/// member or the ButtonID from a TaskDialogButton structure set on the Buttons member.</returns>
 		public int Show()
 		{
-			bool verificationFlagChecked;
-			int radioButtonResult;
-			return this.Show(IntPtr.Zero, out verificationFlagChecked, out radioButtonResult);
+            return Show(IntPtr.Zero, out bool _, out int _);
 		}
 		/// <summary>
 		/// Creates, displays, and operates a task dialog. The task dialog contains application-defined messages, title,
@@ -909,9 +888,7 @@ namespace TaskDialogInterop
 		/// member or the ButtonID from a TaskDialogButton structure set on the Buttons member.</returns>
 		public int Show(System.Windows.Window owner)
 		{
-			bool verificationFlagChecked;
-			int radioButtonResult;
-			return this.Show((owner == null ? IntPtr.Zero : new System.Windows.Interop.WindowInteropHelper(owner).Handle), out verificationFlagChecked, out radioButtonResult);
+            return Show((owner == null ? IntPtr.Zero : new System.Windows.Interop.WindowInteropHelper(owner).Handle), out bool _, out int _);
 		}
 		/// <summary>
 		/// Creates, displays, and operates a task dialog. The task dialog contains application-defined messages, title,
@@ -923,9 +900,7 @@ namespace TaskDialogInterop
 		/// member or the ButtonID from a TaskDialogButton structure set on the Buttons member.</returns>
 		public int Show(IntPtr hwndOwner)
 		{
-			bool verificationFlagChecked;
-			int radioButtonResult;
-			return this.Show(hwndOwner, out verificationFlagChecked, out radioButtonResult);
+            return Show(hwndOwner, out bool _, out int _);
 		}
 		/// <summary>
 		/// Creates, displays, and operates a task dialog. The task dialog contains application-defined messages, title,
@@ -939,8 +914,7 @@ namespace TaskDialogInterop
 		/// member or the ButtonID from a TaskDialogButton structure set on the Buttons member.</returns>
 		public int Show(System.Windows.Window owner, out bool verificationFlagChecked)
 		{
-			int radioButtonResult;
-			return this.Show((owner == null ? IntPtr.Zero : new System.Windows.Interop.WindowInteropHelper(owner).Handle), out verificationFlagChecked, out radioButtonResult);
+            return Show((owner == null ? IntPtr.Zero : new System.Windows.Interop.WindowInteropHelper(owner).Handle), out verificationFlagChecked, out int _);
 		}
 		/// <summary>
 		/// Creates, displays, and operates a task dialog. The task dialog contains application-defined messages, title,
@@ -956,8 +930,7 @@ namespace TaskDialogInterop
 		{
 			// We have to call a private version or PreSharp gets upset about a unsafe
 			// block in a public method. (PreSharp error 56505)
-			int radioButtonResult;
-			return this.PrivateShow(hwndOwner, out verificationFlagChecked, out radioButtonResult);
+            return PrivateShow(hwndOwner, out verificationFlagChecked, out int _);
 		}
 
 		/// <summary>
@@ -973,7 +946,7 @@ namespace TaskDialogInterop
 		/// member or the ButtonID from a TaskDialogButton structure set on the Buttons member.</returns>
 		public int Show(System.Windows.Window owner, out bool verificationFlagChecked, out int radioButtonResult)
 		{
-			return this.Show((owner == null ? IntPtr.Zero : new System.Windows.Interop.WindowInteropHelper(owner).Handle), out verificationFlagChecked, out radioButtonResult);
+			return Show((owner == null ? IntPtr.Zero : new System.Windows.Interop.WindowInteropHelper(owner).Handle), out verificationFlagChecked, out radioButtonResult);
 		}
 
 		/// <summary>
@@ -991,7 +964,7 @@ namespace TaskDialogInterop
 		{
 			// We have to call a private version or PreSharp gets upset about a unsafe
 			// block in a public method. (PreSharp error 56505)
-			return this.PrivateShow(hwndOwner, out verificationFlagChecked, out radioButtonResult);
+			return PrivateShow(hwndOwner, out verificationFlagChecked, out radioButtonResult);
 		}
 
 		/// <summary>
@@ -1009,121 +982,121 @@ namespace TaskDialogInterop
 		{
 			verificationFlagChecked = false;
 			radioButtonResult = 0;
-			int result = 0;
-			TASKDIALOGCONFIG config = new TASKDIALOGCONFIG();
+			int result;
+			TASKDIALOGCONFIG cfg = new TASKDIALOGCONFIG();
 
 			try
 			{
-				config.cbSize = (uint)Marshal.SizeOf(typeof(TASKDIALOGCONFIG));
-				config.hwndParent = hwndOwner;
-				config.dwFlags = this.flags;
-				config.dwCommonButtons = this.commonButtons;
+				cfg.cbSize = (uint)Marshal.SizeOf(typeof(TASKDIALOGCONFIG));
+				cfg.hwndParent = hwndOwner;
+				cfg.dwFlags = flags;
+				cfg.dwCommonButtons = commonButtons;
 
-				if (!string.IsNullOrEmpty(this.windowTitle))
+				if (!string.IsNullOrEmpty(windowTitle))
 				{
-					config.pszWindowTitle = this.windowTitle;
+					cfg.pszWindowTitle = windowTitle;
 				}
 
-				config.MainIcon = (IntPtr)this.mainIcon;
-				if (this.customMainIcon != null)
+				cfg.MainIcon = (IntPtr)mainIcon;
+				if (customMainIcon != null)
 				{
-					config.dwFlags |= TASKDIALOG_FLAGS.TDF_USE_HICON_MAIN;
-					config.MainIcon = this.customMainIcon.Handle;
+					cfg.dwFlags |= TASKDIALOG_FLAGS.TDF_USE_HICON_MAIN;
+					cfg.MainIcon = customMainIcon.Handle;
 				}
 
-				if (!string.IsNullOrEmpty(this.mainInstruction))
+				if (!string.IsNullOrEmpty(mainInstruction))
 				{
-					config.pszMainInstruction = this.mainInstruction;
+					cfg.pszMainInstruction = mainInstruction;
 				}
 
-				if (!string.IsNullOrEmpty(this.content))
+				if (!string.IsNullOrEmpty(content))
 				{
-					config.pszContent = this.content;
+					cfg.pszContent = content;
 				}
 
-				TaskDialogButton[] customButtons = this.buttons;
+				TaskDialogButton[] customButtons = buttons;
 				if (customButtons.Length > 0)
 				{
 					// Hand marshal the buttons array.
 					int elementSize = Marshal.SizeOf(typeof(TaskDialogButton));
-					config.pButtons = Marshal.AllocHGlobal(elementSize * (int)customButtons.Length);
+					cfg.pButtons = Marshal.AllocHGlobal(elementSize * customButtons.Length);
 					for (int i = 0; i < customButtons.Length; i++)
 					{
-					unsafe // Unsafe because of pointer arithmatic.
-					{
-						byte* p = (byte*)config.pButtons;
-						Marshal.StructureToPtr(customButtons[i], (IntPtr)(p + (elementSize * i)), false);
-					}
+                        unsafe // Unsafe because of pointer arithmatic.
+                        {
+                            byte* p = (byte*)cfg.pButtons;
+                            Marshal.StructureToPtr(customButtons[i], (IntPtr)(p + (elementSize * i)), false);
+                        }
 
-					config.cButtons++;
+                        cfg.cButtons++;
 					}
 				}
 
-				TaskDialogButton[] customRadioButtons = this.radioButtons;
+				TaskDialogButton[] customRadioButtons = radioButtons;
 				if (customRadioButtons.Length > 0)
 				{
 					// Hand marshal the buttons array.
 					int elementSize = Marshal.SizeOf(typeof(TaskDialogButton));
-					config.pRadioButtons = Marshal.AllocHGlobal(elementSize * (int)customRadioButtons.Length);
+					cfg.pRadioButtons = Marshal.AllocHGlobal(elementSize * customRadioButtons.Length);
 					for (int i = 0; i < customRadioButtons.Length; i++)
 					{
-					unsafe // Unsafe because of pointer arithmatic.
-					{
-						byte* p = (byte*)config.pRadioButtons;
-						Marshal.StructureToPtr(customRadioButtons[i], (IntPtr)(p + (elementSize * i)), false);
+                        unsafe // Unsafe because of pointer arithmatic.
+                        {
+                            byte* p = (byte*)cfg.pRadioButtons;
+                            Marshal.StructureToPtr(customRadioButtons[i], (IntPtr)(p + (elementSize * i)), false);
+                        }
+
+                        cfg.cRadioButtons++;
 					}
-
-					config.cRadioButtons++;
-					}
 				}
 
-				config.nDefaultButton = this.defaultButton;
-				config.nDefaultRadioButton = this.defaultRadioButton;
+				cfg.nDefaultButton = defaultButton;
+				cfg.nDefaultRadioButton = defaultRadioButton;
 
-				if (!string.IsNullOrEmpty(this.verificationText))
+				if (!string.IsNullOrEmpty(verificationText))
 				{
-					config.pszVerificationText = this.verificationText;
+					cfg.pszVerificationText = verificationText;
 				}
 
-				if (!string.IsNullOrEmpty(this.expandedInformation))
+				if (!string.IsNullOrEmpty(expandedInformation))
 				{
-					config.pszExpandedInformation = this.expandedInformation;
+					cfg.pszExpandedInformation = expandedInformation;
 				}
 
-				if (!string.IsNullOrEmpty(this.expandedControlText))
+				if (!string.IsNullOrEmpty(expandedControlText))
 				{
-					config.pszExpandedControlText = this.expandedControlText;
+					cfg.pszExpandedControlText = expandedControlText;
 				}
 
-				if (!string.IsNullOrEmpty(this.collapsedControlText))
+				if (!string.IsNullOrEmpty(collapsedControlText))
 				{
-					config.pszCollapsedControlText = this.CollapsedControlText;
+					cfg.pszCollapsedControlText = CollapsedControlText;
 				}
 
-				config.FooterIcon = (IntPtr)this.footerIcon;
-				if (this.customFooterIcon != null)
+				cfg.FooterIcon = (IntPtr)footerIcon;
+				if (customFooterIcon != null)
 				{
-					config.dwFlags |= TASKDIALOG_FLAGS.TDF_USE_HICON_FOOTER;
-					config.FooterIcon = this.customFooterIcon.Handle;
+					cfg.dwFlags |= TASKDIALOG_FLAGS.TDF_USE_HICON_FOOTER;
+					cfg.FooterIcon = customFooterIcon.Handle;
 				}
 
-				if (!string.IsNullOrEmpty(this.footer))
+				if (!string.IsNullOrEmpty(footer))
 				{
-					config.pszFooter = this.footer;
+					cfg.pszFooter = footer;
 				}
 
 				// If our user has asked for a callback then we need to ask for one to
 				// translate to the friendly version.
-				if (this.callback != null)
+				if (callback != null)
 				{
-					config.pfCallback = new UnsafeNativeMethods.TaskDialogCallbackProc(this.PrivateCallback);
+					cfg.pfCallback = PrivateCallback;
 				}
 
 				////config.lpCallbackData = this.callbackData; // How do you do this? Need to pin the ref?
-				config.cxWidth = this.width;
+				cfg.cxWidth = width;
 
 				// The call all this mucking about is here for.
-				UnsafeNativeMethods.TaskDialogIndirect(ref config, out result, out radioButtonResult, out verificationFlagChecked);
+				UnsafeNativeMethods.TaskDialogIndirect(ref cfg, out result, out radioButtonResult, out verificationFlagChecked);
 			}
 			finally
 			{
@@ -1131,34 +1104,34 @@ namespace TaskDialogInterop
 				// There is the possiblity of leaking memory if the app-domain is destroyed in a non clean way
 				// and the hosting OS process is kept alive but fixing this would require using hardening techniques
 				// that are not required for the users of this class.
-				if (config.pButtons != IntPtr.Zero)
+				if (cfg.pButtons != IntPtr.Zero)
 				{
 					int elementSize = Marshal.SizeOf(typeof(TaskDialogButton));
-					for (int i = 0; i < config.cButtons; i++)
+					for (int i = 0; i < cfg.cButtons; i++)
 					{
-					unsafe
-					{
-						byte* p = (byte*)config.pButtons;
-						Marshal.DestroyStructure((IntPtr)(p + (elementSize * i)), typeof(TaskDialogButton));
-					}
+                        unsafe
+                        {
+                            byte* p = (byte*)cfg.pButtons;
+                            Marshal.DestroyStructure((IntPtr)(p + (elementSize * i)), typeof(TaskDialogButton));
+                        }
 					}
 
-					Marshal.FreeHGlobal(config.pButtons);
+					Marshal.FreeHGlobal(cfg.pButtons);
 				}
 
-				if (config.pRadioButtons != IntPtr.Zero)
+				if (cfg.pRadioButtons != IntPtr.Zero)
 				{
 					int elementSize = Marshal.SizeOf(typeof(TaskDialogButton));
-					for (int i = 0; i < config.cRadioButtons; i++)
+					for (int i = 0; i < cfg.cRadioButtons; i++)
 					{
-					unsafe
-					{
-						byte* p = (byte*)config.pRadioButtons;
-						Marshal.DestroyStructure((IntPtr)(p + (elementSize * i)), typeof(TaskDialogButton));
-					}
+                        unsafe
+                        {
+                            byte* p = (byte*)cfg.pRadioButtons;
+                            Marshal.DestroyStructure((IntPtr)(p + (elementSize * i)), typeof(TaskDialogButton));
+                        }
 					}
 
-					Marshal.FreeHGlobal(config.pRadioButtons);
+					Marshal.FreeHGlobal(cfg.pRadioButtons);
 				}
 			}
 
@@ -1176,17 +1149,18 @@ namespace TaskDialogInterop
 		/// <returns>A HRESULT. It's not clear in the spec what a failed result will do.</returns>
 		private int PrivateCallback([In] IntPtr hwnd, [In] uint msg, [In] UIntPtr wparam, [In] IntPtr lparam, [In] IntPtr refData)
 		{
-			TaskDialogCallback callback = this.callback;
-			if (callback != null)
+			TaskDialogCallback cbk = this.callback;
+			if (cbk != null)
 			{
 				// Prepare arguments for the callback to the user we are insulating from Interop casting sillyness.
 
 				// Future: Consider reusing a single ActiveTaskDialog object and mark it as destroyed on the destry notification.
 				ActiveTaskDialog activeDialog = new ActiveTaskDialog(hwnd);
-				TaskDialogNotificationArgs args = new TaskDialogNotificationArgs();
-				args.Config = this.config;
-				args.Notification = (TaskDialogNotification)msg;
-				switch (args.Notification)
+                TaskDialogNotificationArgs args = new TaskDialogNotificationArgs
+                {
+                    Config = config, Notification = (TaskDialogNotification) msg
+                };
+                switch (args.Notification)
 				{
 					case TaskDialogNotification.ButtonClicked:
 					case TaskDialogNotification.RadioButtonClicked:
@@ -1211,7 +1185,7 @@ namespace TaskDialogInterop
 						//with the native dialog, too.
 
 						if (args.ButtonId > 100)
-							args.ButtonIndex = args.ButtonId % TaskDialog.CustomButtonIDOffset;
+							args.ButtonIndex = args.ButtonId % TaskDialog.CUSTOM_BUTTON_ID_OFFSET;
 						else
 							args.ButtonIndex = TaskDialog.GetButtonIndexForCommonButton(args.Config.CommonButtons, args.ButtonId);
 						break;
@@ -1229,7 +1203,7 @@ namespace TaskDialogInterop
 						break;
 				}
 
-				bool result = callback(activeDialog, args, this.callbackData);
+				bool result = cbk(activeDialog, args, callbackData);
 
 				return (result ? 1 : 0);
 			}
@@ -1246,11 +1220,11 @@ namespace TaskDialogInterop
 		{
 			if (value)
 			{
-				this.flags |= flag;
+				flags |= flag;
 			}
 			else
 			{
-				this.flags &= ~flag;
+				flags &= ~flag;
 			}
 		}
 	}
