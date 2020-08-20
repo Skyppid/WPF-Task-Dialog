@@ -3,12 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
-    <AssemblyVersion>1.0.14.22306</AssemblyVersion>
-    <FileVersion>1.0.14.22306</FileVersion>
+    <AssemblyVersion>1.0.15.23890</AssemblyVersion>
+    <FileVersion>1.0.15.23890</FileVersion>
     <RootNamespace>TaskDialogInterop</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageId>TaskDialog.Core</PackageId>
+    <PackageId>WPFTaskDialog.Core</PackageId>
     <Company />
     <Product>TaskDialog for WPF</Product>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
